@@ -1,23 +1,37 @@
 <script lang="ts">
   import * as yup from 'yup';
+  import { supabase } from '../../supabaseClient';
+  import type { SignupFormValue } from '../../types/form.types';
+  import { navigate } from 'svelte-routing';
   const schema = yup.object().shape({
     email: yup.string().email().required(),
     password: yup.string().min(8).required(),
     repassword: yup.string().oneOf([yup.ref('password'), ''], 'Passwords must match')
   });
   let formErrors = [];
-  let values = {};
+  let values: SignupFormValue = {
+    email: '',
+    password: '',
+    repassword: ''
+  };
   let errors = {};
 
   const validate = async () => {
     try {
       // `abortEarly: false` to get all the errors
       await schema.validate(values, { abortEarly: false });
-      console.log(JSON.stringify(values, null, 2));
       errors = {};
-    } catch (err:any) {
+      console.log('===>');
+      const { data, error } = await supabase.auth.signUp({
+        email: values.email,
+        password: values.password
+      });
+      if (!error) {
+        navigate('/user/', { replace: true });
+      }
+    } catch (err: any) {
       // errors = extractErrors(err);
-      const errors = err.inner.reduce((acc:any, err:any) => {
+      const errors = err.inner.reduce((acc: any, err: any) => {
         return { ...acc, [err.path]: err.message };
       }, {});
       console.log(errors);
