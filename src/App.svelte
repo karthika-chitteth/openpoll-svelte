@@ -1,19 +1,24 @@
-<script lang="ts">
-  let count: number = 0;
-  $: double = count * 2;
-  const onClick = () => {
-    count++;
-  };
+<!-- App.svelte -->
+<script>
+  import { Router, Link, Route } from 'svelte-routing';
+  import Home from './pages/public/home.svelte';
+  import Signup from './pages/auth/signup.svelte';
+  import Signin from './pages/auth/signin.svelte';
+  import Dashboard from './pages/user/dashboard.svelte';
+  export let url = '';
 </script>
 
-<div
-  class="w-[100vw] h-[100vh] flex align-middle bg-gray-200 flex-row justify-center items-center"
->
+<Router {url}>
+  <!-- <nav class="absolute">
+    <Link to="/">Home</Link>
+  </nav> -->
   <div>
-    <h1 class="text-3xl font-bold italic text-gray-700">Hello world!</h1>
-    <button on:click={onClick} class="bg-red-400 p-8 active:bg-red-500"
-      >{count}</button
-    >
-    <label for="">Doubled Value : {double}</label>
+    <!-- <Route path="/blog/:id" component={BlogPost} />
+    <Route path="/blog" component={Blog} />
+    <Route path="/about" component={About} /> -->
+    <Route path="/"><Home /></Route>
+    <Route path="/auth/signin"><Signin /></Route>
+    <Route path="/auth/signup"><Signup /></Route>
+    <Route path="/user"><Dashboard /></Route>
   </div>
-</div>
+</Router>
