@@ -21,7 +21,9 @@
     aria-label="Global"
   >
     <div class="mr-5 md:mr-8">
-      <a class="flex-none text-xl font-semibold text-white" href="#" aria-label="Brand">Brand</a>
+      <a class="flex-none text-xl font-semibold text-white" href="#" aria-label="Brand">
+        <img src="/public/logo.svg" alt="" />
+      </a>
     </div>
 
     <div
