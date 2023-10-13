@@ -1,47 +1,65 @@
-# Svelte + TS + Vite
+# openPoll Svelte App Architecture Document
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+## Overview
 
-## Recommended IDE Setup
+The openPoll Svelte app is a feature-rich web application designed for creating and participating in polls. This architecture document provides a comprehensive view of the project's structure, libraries, and the organization of key components.
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+## Libraries
 
-## Need an official Svelte framework?
+The openPoll Svelte app relies on several libraries to provide functionality and maintainability:
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
+- **Svelte**: The core library for building interactive and dynamic user interfaces.
 
-## Technical considerations
+- **Tailwind CSS**: A utility-first CSS framework that streamlines UI development and responsiveness.
 
-**Why use this over SvelteKit?**
+- **Preline**: A code preprocessor (available at [preline.co](https://preline.co/index.html)) used for code readability and maintainability.
 
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
+- **Svelte Routing**: A routing library essential for handling navigation and routing within the app.
 
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
+- **Yup**: A validation library for data validation and form validation, ensuring data integrity.
 
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
+- **Axios**: A promise-based HTTP client used for making API requests to a backend server.
 
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
+## Architecture
 
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
+The project's directory structure follows a logical organization for improved development and maintainability.
 
-**Why include `.vscode/extensions.json`?**
-
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
-
-**Why enable `allowJs` in the TS template?**
-
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+```
+openPoll Svelte App
+├── public/ (public assets such as images, fonts, and index.html)
+│
+├── src/ (source code directory)
+│ ├── assets/ (application-specific assets)
+│ │
+│ ├── components/ (Svelte components)
+│ │ ├── Navbar.svelte (shared navigation component)
+│ │ └── Sidebar.svelte (shared sidebar component)
+│ │
+│ ├── store/ (Svelte stores and context providers)
+│ │
+│ ├── schemas/ (data validation schemas for use with Yup)
+│ │
+│ ├── pages/ (Svelte route pages for navigation)
+│ │ ├── auth/ (components for authenticated users)
+│ │ │
+│ │ ├── public/ (components for public access)
+│ │ │
+│ │ ├── user/
+│ │ │ ├── Dashboard.svelte (user dashboard component)
+│ │ │ │
+│ │ │ ├── poll/
+│ │ │ │ ├── Detail.svelte (poll detail component)
+│ │ │ │ ├── View.svelte (poll view component)
+│ │ │ │
+│ │ │ └── Index.svelte (common layout for user pages)
+│ │ │
+│ │ └── guest/
+│ │ │
+│ │ └── poll/
+│ │ └── View.svelte (guest poll view component)
+│ │
+│ ├── services/
+│ │ └── api.js (Axios API service for making HTTP requests)
+│ │
+│ ├── App.svelte (the main application component with Svelte Routing)
 ```

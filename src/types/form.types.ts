@@ -1,6 +1,5 @@
-export interface SignupFormData {
-  username: string;
+export interface SignupFormValue {
   email: string;
   password: string;
-  confirmPassword: string;
+  repassword?: string;
 }
