@@ -1,7 +1,7 @@
 <script lang="ts">
   import { navigate } from 'svelte-routing';
   import { supabase } from '../../services/supabaseClient';
-
+  import logo from '../../assets/logo.svg';
   export let logged_email: string | undefined;
 
   const handleLogout = async () => {
@@ -22,7 +22,7 @@
   >
     <div class="mr-5 md:mr-8">
       <a class="flex-none text-xl font-semibold text-white" href="#" aria-label="Brand">
-        <img src="/public/logo.svg" alt="" />
+        <img src={logo} alt="" />
       </a>
     </div>
 

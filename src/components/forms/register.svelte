@@ -48,10 +48,7 @@
         <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Sign up</h1>
         <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
           Already have an account?
-          <a
-            class="text-blue-600 decoration-2 hover:underline font-medium"
-            href="../examples/html/signin.html"
-          >
+          <a class="text-blue-600 decoration-2 hover:underline font-medium" href="/auth/signin">
             Sign in here
           </a>
         </p>

@@ -1,3 +1,9 @@
+<script>
+  import one from '../assets/1.svg';
+  import two from '../assets/2.svg';
+  import three from '../assets/3.svg';
+</script>
+
 <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
   <div class="relative p-6 md:p-16">
     <!-- Grid -->
@@ -127,7 +133,7 @@
             <div id="tabs-with-card-1" role="tabpanel" aria-labelledby="tabs-with-card-item-1">
               <img
                 class="shadow-xl shadow-gray-200 rounded-xl dark:shadow-gray-900/[.2]"
-                src="public/undraw_real_time_collaboration_c62i.svg"
+                src={one}
                 alt="Image Description"
               />
             </div>
@@ -140,7 +146,7 @@
             >
               <img
                 class="shadow-xl shadow-gray-200 rounded-xl dark:shadow-gray-900/[.2]"
-                src="undraw_online_connection_6778.svg"
+                src={two}
                 alt="Image Description"
               />
             </div>
@@ -153,7 +159,7 @@
             >
               <img
                 class="shadow-xl shadow-gray-200 rounded-xl dark:shadow-gray-900/[.2]"
-                src="undraw_site_stats_re_ejgy.svg"
+                src={three}
                 alt="Image Description"
               />
             </div>
