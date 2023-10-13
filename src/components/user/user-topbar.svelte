@@ -1,8 +1,8 @@
 <script lang="ts">
   import { navigate } from 'svelte-routing';
-  import { supabase } from '../../supabaseClient';
+  import { supabase } from '../../services/supabaseClient';
 
-  export let logged_email: string;
+  export let logged_email: string | undefined;
 
   const handleLogout = async () => {
     if (confirm('Are you sure you want to logout?') === false) return;

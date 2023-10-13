@@ -1,6 +1,6 @@
 <script lang="ts">
   import * as yup from 'yup';
-  import { supabase } from '../../supabaseClient';
+  import { supabase } from '../../services/supabaseClient';
   import type { SignupFormValue } from '../../types/form.types';
   import { navigate } from 'svelte-routing';
   const schema = yup.object().shape({

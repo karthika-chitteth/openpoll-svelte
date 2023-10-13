@@ -4,21 +4,16 @@
   import UserTopbar from '../../components/user/user-topbar.svelte';
 
   import type { AuthSession } from '@supabase/supabase-js';
-  import { supabase } from '../../supabaseClient';
+  import { AuthService } from '../../services/auth.service';
 
   let session: AuthSession;
 
   onMount(() => {
-    supabase.auth.getSession().then(({ data }) => {
+    AuthService.getSession().then(({ data }) => {
       session = data.session!;
-
       if (!session) {
         window.location.href = '/auth/signin';
       }
-    });
-
-    supabase.auth.onAuthStateChange((_event, _session) => {
-      session = _session!;
     });
   });
 </script>
