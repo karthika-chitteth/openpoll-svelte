@@ -63,3 +63,13 @@ openPoll Svelte App
 │ │
 │ ├── App.svelte (the main application component with Svelte Routing)
 ```
+
+## UI Blocks Used
+
+- Home Page
+  - **[Hero Section](https://preline.co/examples/hero-sections.html#hero-center-aligned-in-dark-bg)**
+    ![Alt text](images/image.png)
+  - **[Features](https://preline.co/examples/features-navs.html#fn-vertical-tabs-with-overlapping-background)**
+    ![Alt text](images/image-1.png)
+  - **[Footer](https://preline.co/examples/footers.html#footer-dark-bg-with-subscribe-form)**
+    ![Alt text](images/image-2.png)
