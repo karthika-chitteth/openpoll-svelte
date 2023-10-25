@@ -1,15 +1,14 @@
 <script lang="ts">
   import { navigate } from 'svelte-routing';
-  import { supabase } from '../../services/supabaseClient';
   import logo from '../../assets/logo.svg';
   export let logged_email: string | undefined;
 
   const handleLogout = async () => {
     if (confirm('Are you sure you want to logout?') === false) return;
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      navigate('/auth/signin', { replace: true });
-    }
+    // const { error } = await supabase.auth.signOut();
+    // if (!error) {
+    //   navigate('/auth/signin', { replace: true });
+    // }
   };
 </script>
 

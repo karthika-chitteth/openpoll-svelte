@@ -1,14 +1,18 @@
 <script lang="ts">
   import * as yup from 'yup';
-  import { supabase } from '../../services/supabaseClient';
   import type { SignupFormValue } from '../../types/form.types';
   import { navigate } from 'svelte-routing';
+  import { createEventDispatcher } from 'svelte';
+  import type { TUserLoginPayload } from '../../types/user.type';
+  const dispatch = createEventDispatcher<{
+    submit: TUserLoginPayload;
+  }>();
   const schema = yup.object().shape({
     email: yup.string().email().required(),
     password: yup.string().required()
   });
   let formErrors = [];
-  let values: SignupFormValue = {
+  let values: TUserLoginPayload = {
     email: '',
     password: ''
   };
@@ -19,13 +23,7 @@
       // `abortEarly: false` to get all the errors
       await schema.validate(values, { abortEarly: false });
       errors = {};
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email: values.email,
-        password: values.password
-      });
-      if (!error) {
-        navigate('/user/', { replace: true });
-      }
+      dispatch('submit', values);
     } catch (err: any) {
       // errors = extractErrors(err);
       const errors = err.inner.reduce((acc: any, err: any) => {
@@ -45,7 +43,7 @@
         <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Sign In</h1>
         <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
           Dont have an account?
-          <a class="text-blue-600 decoration-2 hover:underline font-medium" href="/auth/signup">
+          <a class="text-blue-600 decoration-2 hover:underline font-medium" href="/auth/register">
             Sign up now
           </a>
         </p>
