@@ -26,7 +26,7 @@
     password: '',
     repassword: ''
   };
-  let errors = {};
+  let errors: any = {};
 
   const validate = async () => {
     try {
@@ -45,13 +45,12 @@
       // });
       // if (!error) {
       //   navigate('/user/', { replace: true });
-      // }
+      // }ee
     } catch (err: any) {
       // errors = extractErrors(err);
-      const errors = err.inner.reduce((acc: any, err: any) => {
+      errors = err.inner.reduce((acc: any, err: any) => {
         return { ...acc, [err.path]: err.message };
       }, {});
-      console.log(errors);
     }
   };
 </script>
@@ -81,14 +80,12 @@
         <!-- Form -->
         <form on:submit|preventDefault={validate}>
           <div class="grid gap-y-4">
-            <!-- <span class="text-white">
-              {JSON.stringify(values, null, 4)}
-            </span> -->
             <TextField
               label="Name"
               type="text"
               placeholder="Name"
               name="name"
+              error={errors?.name}
               bind:value={values.name}
             />
             <TextField
@@ -97,6 +94,7 @@
               placeholder="Email"
               name="email"
               bind:value={values.email}
+              error={errors?.email}
             />
             <TextField
               label="Password"
@@ -104,6 +102,7 @@
               placeholder="Password"
               name="password"
               bind:value={values.password}
+              error={errors?.password}
             />
             <TextField
               label="Confirm Password"
@@ -111,6 +110,7 @@
               placeholder="Confirm Password"
               name="repassword"
               bind:value={values.repassword}
+              error={errors?.repassword}
             />
 
             <button

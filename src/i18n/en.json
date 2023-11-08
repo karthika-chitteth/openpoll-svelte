@@ -1,0 +1,15 @@
+{
+  "user": {
+    "hero": {
+      "title": "Build your own polls",
+      "description": "You can create custom polls by clicking create poll button.",
+      "createPoll": "Create Poll"
+    },
+    "navbar": {
+      "logout": "Logout"
+    },
+    "messages": {
+      "confirmLogout": "Are you sure you want to logout?"
+    }
+  }
+}

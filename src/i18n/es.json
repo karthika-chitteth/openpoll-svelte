@@ -1,0 +1,12 @@
+{
+  "user": {
+    "hero": {
+      "title": "Construye tus propias encuestas",
+      "description": "Puedes crear encuestas personalizadas haciendo clic en el botón Crear encuesta.",
+      "createPoll": "Crear encuesta"
+    },
+    "navbar": {
+      "logout": "Cerrar sesión"
+    }
+  }
+}
