@@ -1,12 +1,25 @@
 {
-  "user": {
-    "hero": {
-      "title": "Construye tus propias encuestas",
-      "description": "Puedes crear encuestas personalizadas haciendo clic en el botón Crear encuesta.",
-      "createPoll": "Crear encuesta"
-    },
-    "navbar": {
-      "logout": "Cerrar sesión"
+  "public": {
+    "home": {
+      "hero": {
+        "title": "¡Realiza Encuestas sin Esfuerzo!",
+        "description": "La solución definitiva para interactuar con tu audiencia y recopilar comentarios instantáneos mediante encuestas en vivo y sondeos.",
+        "getStarted": "Comenzar"
+      },
+      "features": {
+        "realtime": {
+          "title": "Encuestas en Tiempo Real",
+          "description": "Crea, personaliza y lanza encuestas en vivo en cuestión de segundos."
+        },
+        "audience": {
+          "title": "Interacción con la Audiencia",
+          "description": "Mantén a tu audiencia comprometida y atenta. Los asistentes pueden participar fácilmente en encuestas usando sus teléfonos inteligentes o tabletas, haciéndolo conveniente y accesible."
+        },
+        "results": {
+          "title": "Resultados Instantáneos",
+          "description": "Observa cómo llegan los datos a medida que los participantes votan. Live Poll Pro compila e muestra instantáneamente los resultados, permitiéndote interpretar y compartir hallazgos con tu audiencia de inmediato."
+        }
+      }
     }
   }
 }

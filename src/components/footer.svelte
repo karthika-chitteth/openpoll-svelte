@@ -1,5 +1,4 @@
 <script>
-  import logo from '../assets/logo.svg';
   import { _Language } from '../store';
   const toggleLanguage = () => {
     const lang = $_Language === 'en' ? 'es' : 'en';
@@ -8,10 +7,10 @@
   };
 </script>
 
-<footer class="bg-gray-900 fixed w-full bottom-0 px-5 py-2">
+<footer class="bg-gray fixed w-full bottom-0 px-5 py-2 backdrop-blur-md z-40">
   <div class=" grid gap-y-2 sm:gap-y-0 sm:flex sm:justify-between sm:items-center">
     <div class="flex justify-between items-center">
-      <p class="text-sm text-gray-400">© 2022 Preline. All rights reserved.</p>
+      <p class="text-sm text-gray-400">Made with ♥️ | openpoll</p>
     </div>
     <!-- End Col -->
     <button

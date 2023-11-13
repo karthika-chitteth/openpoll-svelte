@@ -1,15 +1,25 @@
 {
-  "user": {
-    "hero": {
-      "title": "Build your own polls",
-      "description": "You can create custom polls by clicking create poll button.",
-      "createPoll": "Create Poll"
-    },
-    "navbar": {
-      "logout": "Logout"
-    },
-    "messages": {
-      "confirmLogout": "Are you sure you want to logout?"
+  "public": {
+    "home": {
+      "hero": {
+        "title": "Poll Taking Made Effortless!",
+        "description": "The ultimate solution for engaging your audience and gathering instant feedback through live polls and surveys",
+        "getStarted": "Get started"
+      },
+      "features": {
+        "realtime": {
+          "title": "Real-Time Polling",
+          "description": "Create, customize, and launch live polls in seconds."
+        },
+        "audience": {
+          "title": "Audience Interaction",
+          "description": "Keep your audience engaged and attentive. Attendees can easily participate in polls using their smartphones or tablets, making it convenient and accessible."
+        },
+        "results": {
+          "title": "Instant Results",
+          "description": "Watch the data roll in as participants vote. Live Poll Pro instantly compiles and displays results, allowing you to interpret and share findings with your audience immediately"
+        }
+      }
     }
   }
 }

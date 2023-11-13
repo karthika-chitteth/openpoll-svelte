@@ -2,6 +2,7 @@
   import one from '../assets/1.svg';
   import two from '../assets/2.svg';
   import three from '../assets/3.svg';
+  import { translate } from '../services/i18n';
 </script>
 
 <div class="max-w-[85rem] px-4 py-10 sm:px-6 lg:px-8 lg:py-14 mx-auto">
@@ -14,7 +15,7 @@
         </h2>
 
         <!-- Tab Navs -->
-        <nav class="grid gap-4 mt-5 md:mt-10" aria-label="Tabs" role="tablist">
+        <nav class="grid gap-4 mt-5 md:mt-10" aria-label="Tabs">
           <button
             type="button"
             class="hs-tab-active:bg-white hs-tab-active:shadow-md hs-tab-active:hover:border-transparent text-left hover:bg-gray-200 p-4 md:p-5 rounded-xl dark:hs-tab-active:bg-slate-900 dark:hover:bg-gray-700 active"
@@ -40,11 +41,13 @@
               <span class="grow ml-6">
                 <span
                   class="block text-lg font-semibold hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-gray-200"
-                  >Real-Time Polling</span
+                >
+                  {$translate('public.home.features.realtime.title')}</span
                 >
                 <span
                   class="block mt-1 text-gray-800 dark:hs-tab-active:text-gray-200 dark:text-gray-200"
-                  >Create, customize, and launch live polls in seconds.
+                >
+                  {$translate('public.home.features.realtime.description')}
                 </span>
               </span>
             </span>
@@ -75,12 +78,11 @@
               <span class="grow ml-6">
                 <span
                   class="block text-lg font-semibold hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-gray-200"
-                  >Audience Interaction</span
+                  >{$translate('public.home.features.audience.title')}</span
                 >
                 <span
                   class="block mt-1 text-gray-800 dark:hs-tab-active:text-gray-200 dark:text-gray-200"
-                  >Keep your audience engaged and attentive. Attendees can easily participate in
-                  polls using their smartphones or tablets, making it convenient and accessible.
+                  >{$translate('public.home.features.audience.description')}
                 </span>
               </span>
             </span>
@@ -110,13 +112,11 @@
               <span class="grow ml-6">
                 <span
                   class="block text-lg font-semibold hs-tab-active:text-blue-600 text-gray-800 dark:hs-tab-active:text-blue-500 dark:text-gray-200"
-                  >Instant Results</span
+                  >{$translate('public.home.features.results.title')}</span
                 >
                 <span
                   class="block mt-1 text-gray-800 dark:hs-tab-active:text-gray-200 dark:text-gray-200"
-                  >Watch the data roll in as participants vote. LivePoll Pro instantly compiles and
-                  displays results, allowing you to interpret and share findings with your audience
-                  immediatel</span
+                  >{$translate('public.home.features.results.description')}</span
                 >
               </span>
             </span>
