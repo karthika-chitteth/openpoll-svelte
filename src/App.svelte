@@ -10,13 +10,14 @@
   import { setupI18n } from './services/i18n';
   import { _Language } from './store';
   import Footer from './components/footer.svelte';
+  import Polls from './pages/user/polls.svelte';
   // ...
   _Language.subscribe((lang) => {
     setupI18n({ withLocale: lang });
   });
 </script>
 
-<div class="h-[100vh] ">
+<div class="h-[100vh]">
   <Router {url}>
     <!-- <nav class="absolute">
     <Link to="/">Home</Link>
@@ -30,6 +31,11 @@
     <Route path="/user/">
       <ProtectedRoute>
         <Dashboard />
+      </ProtectedRoute>
+    </Route>
+    <Route path="/user/polls">
+      <ProtectedRoute>
+        <Polls />
       </ProtectedRoute>
     </Route>
   </Router>

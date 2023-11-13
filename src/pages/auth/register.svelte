@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { navigate } from 'svelte-routing';
   import BrandHeader from '../../components/brand-header.svelte';
   import RegisterComponent from '../../components/forms/register-component.svelte';
   import { UserService } from '../../services/user.service';
@@ -6,8 +7,10 @@
 
   const onSubmit = async (e: CustomEvent<TUserRegisterPayload>) => {
     // console.log(e.detail);
-    const login = await UserService.register(e.detail);
-    console.log(login);
+    const login = await UserService.register(e.detail).catch((err) => {
+      console.log(err);
+    });
+    navigate('/user/', { replace: true });
   };
 </script>
 

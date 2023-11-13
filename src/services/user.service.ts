@@ -21,7 +21,7 @@ export namespace UserService {
   };
 
   export const logout = async () => {
-    localStorage.removeItem('user');
+    localStorage.removeItem('openpoll_user');
     return true;
   };
 

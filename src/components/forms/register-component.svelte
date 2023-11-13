@@ -7,7 +7,7 @@
   const schema = yup.object().shape({
     name: yup.string().required(),
     email: yup.string().email().required(),
-    password: yup.string().min(8).required(),
+    password: yup.string().min(5).required(),
     repassword: yup.string().oneOf([yup.ref('password'), ''], 'Passwords must match')
   });
   let formErrors = [];
@@ -39,13 +39,7 @@
         password: values.password,
         name: values.name
       });
-      // const { data, error } = await supabase.auth.signUp({
-      //   email: values.email,
-      //   password: values.password
-      // });
-      // if (!error) {
-      //   navigate('/user/', { replace: true });
-      // }ee
+   
     } catch (err: any) {
       // errors = extractErrors(err);
       errors = err.inner.reduce((acc: any, err: any) => {
