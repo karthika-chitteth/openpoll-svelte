@@ -6,7 +6,7 @@
   export let url = '';
   import { setupI18n } from './services/i18n';
   import { _Language } from './store';
-  import Footer from './components/footer.svelte';
+  import CreatePoll from './pages/polls/create-poll.svelte';
 
   // ...
   _Language.subscribe((lang) => {
@@ -18,5 +18,6 @@
   <Router {url}>
     <Route path="/"><Home /></Route>
     <Route path="/dashboard"><Dashboard /></Route>
+    <Route path="/users/create-poll"><CreatePoll /></Route>
   </Router>
 </div>
