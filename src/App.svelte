@@ -6,6 +6,8 @@
   import { setupI18n } from './services/i18n';
   import { _Language } from './store';
   import Footer from './components/footer.svelte';
+  import Login from './pages/public/signup.svelte';
+  import Signup from './pages/public/signup.svelte';
   // ...
   _Language.subscribe((lang) => {
     setupI18n({ withLocale: lang });
@@ -15,6 +17,6 @@
 <div class="h-[100vh]">
   <Router {url}>
     <Route path="/"><Home /></Route>
+    <Route path="/signup"> <Signup/></Route>
   </Router>
-  <Footer />
 </div>

@@ -21,7 +21,7 @@
       <div class="text-center">
         <a
           class="inline-flex justify-center items-center gap-x-3 text-center bg-gradient-to-tl from-blue-600 to-violet-600 shadow-lg shadow-transparent hover:shadow-blue-700/50 border border-transparent text-white text-sm font-medium rounded-full focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 focus:ring-offset-white py-3 px-6 dark:focus:ring-offset-gray-800"
-          href="/user"
+          href="/signup"
         >
           {$translate('public.home.hero.getStarted')}
           <svg class="w-2.5 h-2.5" width="16" height="16" viewBox="0 0 16 16" fill="none">
