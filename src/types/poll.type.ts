@@ -6,12 +6,12 @@ export type TPoll = {
 };
 
 export type TPollQuestion = {
-  id: number;
-  pollId: number;
-  title: string;
-  questionType: 0 | 1;
-  isActive: boolean;
-  options: TPollQuestionOption[];
+  id?: number;
+  pollId?: number;
+  title?: string;
+  questionType?: 0 | 1;
+  isActive?: boolean;
+  options?: TPollQuestionOption[];
 };
 
 export type TPollQuestionOption = {
