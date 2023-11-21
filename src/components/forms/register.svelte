@@ -1,15 +1,50 @@
 <script lang="ts">
-  let name: string;
-  let email: string;
-  let password: string;
-  let confirmpassword: string;
+  import { UserService } from '../../services/user.service';
+  import { RegisterSchema } from '../../schema/auth/register.schema';
+  import { navigate } from 'svelte-routing';
+  import * as yup from 'yup';
+  import { writable } from 'svelte/store';
 
-  function formSubmit(event:SubmitEvent) {
-    event.preventDefault();
-    console.log(name, email, password, confirmpassword);
+  let formData = {
+    name: '',
+    email: '',
+    password: '',
+    confirmpassword: ''
+  };
+  const FormErrors = writable({
+    email: '',
+    name: '',
+    password: '',
+    confirmPassword: ''
+  });
+  async function formSubmit(event: SubmitEvent) {
+  event.preventDefault();
+  let response;
+  try {
+    await RegisterSchema.validate(formData, { abortEarly: false });
+    response = await UserService.register({
+      name: formData.name,
+      email: formData.email,
+      password: formData.password,
+      confirmpassword: formData.confirmpassword
+    });
+    if (response) {
+      navigate('/login');
+    }
+    localStorage.setItem("token",response.data.token)
+  } catch (error: unknown) {
+    if (error instanceof yup.ValidationError) {
+      error.inner.forEach((err: yup.ValidationError) => {
+        const propertyName = err.path?.toString() as string;
+        FormErrors.update((prevErrors) => ({
+          ...prevErrors,
+          [propertyName]: err.message,
+        }));
+      });
+    }
   }
+}
 </script>
-
 <!-- svelte-ignore a11y-missing-attribute -->
 <body class="dark:bg-slate-900 bg-[#1F1C46] flex h-full items-baseline py-16">
   <main class="w-full max-w-md mx-auto p-6">
@@ -46,7 +81,7 @@
                 <div class="relative">
                   <input
                     type="email"
-                    bind:value={email}
+                    bind:value={formData.email}
                     placeholder="email"
                     class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                     required
@@ -57,7 +92,7 @@
                     <input
                       type="text"
                       placeholder="username"
-                      bind:value={name}
+                      bind:value={formData.name}
                       class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                       required
                       aria-describedby="name-error"
@@ -91,7 +126,7 @@
                   <div class="relative">
                     <input
                       type="password"
-                      bind:value={password}
+                      bind:value={formData.password}
                       placeholder="password"
                       class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                       required
@@ -128,7 +163,7 @@
                   <div class="relative">
                     <input
                       type="password"
-                      bind:value={confirmpassword}
+                      bind:value={formData.confirmpassword}
                       id="confirm-password"
                       placeholder="confirm password"
                       class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
