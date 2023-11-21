@@ -7,7 +7,9 @@
   import { setupI18n } from './services/i18n';
   import { _Language } from './store';
   import CreatePoll from './pages/polls/create-poll.svelte';
-
+  import Footer from './components/footer.svelte';
+  import Login from './pages/public/signup.svelte';
+  import Signup from './pages/public/signup.svelte';
   // ...
   _Language.subscribe((lang) => {
     setupI18n({ withLocale: lang });
@@ -19,5 +21,6 @@
     <Route path="/"><Home /></Route>
     <Route path="/dashboard"><Dashboard /></Route>
     <Route path="/users/create-poll"><CreatePoll /></Route>
+    <Route path="/signup"><Signup /></Route>
   </Router>
 </div>

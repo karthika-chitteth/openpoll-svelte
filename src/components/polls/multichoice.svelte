@@ -73,16 +73,28 @@
     try {
       const questions = [
         {
+          id: 0,
+          pollId: 0,
           title: question,
           questionType: 0,
+
           options: options.map((label) => ({
-            title: label
+            id: 0,
+            title: label,
+            questionId: 0
           }))
         }
       ];
 
       const data = {
-        title: question,
+        // title: question,
+
+        id: 0,
+        title: 'string',
+        isActive: true,
+        date: '2023-11-21T06:59:35.114Z',
+        uniqueId: 'string',
+
         questions: questions.map((label) => ({
           title: label.title,
           questionType: 0,
