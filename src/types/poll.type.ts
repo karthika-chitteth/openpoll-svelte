@@ -1,8 +1,8 @@
 export type TPoll = {
-  id: number;
-  title: string;
-  isActive: boolean;
-  questions: TPollQuestion[];
+  id?: number;
+  title?: string;
+  isActive?: boolean;
+  questions?: TPollQuestion[];
 };
 
 export type TPollQuestion = {
