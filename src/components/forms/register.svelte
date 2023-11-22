@@ -49,7 +49,7 @@
 <body class="dark:bg-slate-900 bg-[#1F1C46] flex h-full items-baseline py-16">
   <main class="w-full max-w-md mx-auto p-6">
     <div
-      class="mt-7 bg-gray-200 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
+      class="mt-7 bg-gray-200 bg-white bg-gray-300 border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
     >
       <div class="p-4 sm:p-7">
         <div class="text-center">
@@ -82,7 +82,7 @@
                   <input
                     type="email"
                     bind:value={formData.email}
-                    placeholder="email"
+                    placeholder="Enter your email"
                     class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                     required
                     aria-describedby="email-error"
@@ -91,7 +91,7 @@
                   <div class="relative">
                     <input
                       type="text"
-                      placeholder="username"
+                      placeholder="Enter you name"
                       bind:value={formData.name}
                       class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                       required
@@ -127,7 +127,7 @@
                     <input
                       type="password"
                       bind:value={formData.password}
-                      placeholder="password"
+                      placeholder="Must be at least 8 characters"
                       class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                       required
                       aria-describedby="password-error"
@@ -212,6 +212,5 @@
     </div>
   </main>
 </body>
-
 <style>
 </style>
