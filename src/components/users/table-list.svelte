@@ -1,55 +1,29 @@
-<!-- <script>
+<script>
   import { onMount } from 'svelte';
-  //   import { activatePoll, deactivatePoll, deletePoll, listPoll } from '../../services/poll.service';
   import { PollService } from '../../services/poll.service';
-  import { CreatePollResponse } from '../../models/response/polls/polls.response';
-  import { navigate } from 'svelte-routing';
 
   let polls = [];
 
   onMount(async () => {
     const fetchData = async () => {
       const pollData = await PollService.listPoll();
-
-      if (pollData && Array.isArray(pollData.data)) {
-        setPolls(pollData.data);
-      }
+      polls = pollData.data;
+      console.log(polls);
     };
 
     fetchData();
   });
 
-  const handleEditClick = async (id) => {
-    navigate('/users/edit-poll/' + id);
+  const handleEditClick = async () => {
+    // Handle edit click
   };
 
-  const handleDeleteClick = async (id) => {
-    const response = await PollService.deletePoll(id);
-    console.log('Poll deleted:', response);
-
-    if (response.message === 'Success') {
-      const updatedPollData = await PollService.listPoll();
-      if (updatedPollData && Array.isArray(updatedPollData.data)) {
-        setPolls(updatedPollData.data);
-      }
-    }
+  const handleDeleteClick = async () => {
+    // Handle delete click
   };
 
-  const handleActivateClick = async (id, isActivate) => {
-    const actiivatePoll = isActivate
-      ? await PollService.deactivatePoll(id)
-      : await PollService.activatePoll(id);
-
-    if (!isActivate) {
-      navigate(`/users/poll-details/${id}`, { state: { actiivatePoll } });
-      console.log('actiivatePoll', actiivatePoll);
-    }
-    if (actiivatePoll.message === 'Success') {
-      const updatedPollData = await PollService.listPoll();
-      if (updatedPollData && Array.isArray(updatedPollData.data)) {
-        setPolls(updatedPollData.data);
-      }
-    }
+  const handleActivateClick = async () => {
+    // Handle activate click
   };
 </script>
 
@@ -86,58 +60,46 @@
             </tr>
           </thead>
           <tbody>
-            {#each polls as poll, index (poll.id)}
+            {#each polls as poll}
               <tr
-                class={index % 2 === 0
-                  ? 'odd:bg-gray-100 dark:even:bg-slate-800'
+                class={poll.id % 2 === 0
+                  ? 'even:bg-gray-100 dark:even:bg-slate-800'
                   : 'odd:bg-white dark:odd:bg-slate-900'}
               >
                 <td
                   class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"
                 >
-                  {#if poll.isActive}
-                    <a href={`/users/poll-details/${poll.id}`}>
-                      {#each poll.questions as question, questionIndex (question.id)}
-                        <div key={questionIndex}>{question.title}</div>
-                      {/each}
-                    </a>
-                  {:else}
-                    {#each poll.questions as question, questionIndex (question.id)}
-                      <div key={questionIndex}>{question.title}</div>
-                    {/each}
-                  {/if}
+                  <a href={`/users/poll-details/${poll.id}`}>
+                    <div>{poll.title}</div>
+                  </a>
                 </td>
-                <td
-                  class={`px-6 py-4 text-center whitespace-nowrap text-sm font-medium ${
-                    poll.isActive ? 'text-green-500' : 'text-red-500'
-                  }`}
-                >
-                  {poll.isActive ? 'Active' : 'Inactive'}
+                <td class="px-6 py-4 text-center whitespace-nowrap text-sm font-medium">
+                  {#if poll.isActive}
+                    <span class="text-green-500">Active</span>
+                  {:else}
+                    <span class="text-red-500">Inactive</span>
+                  {/if}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
                   <button
                     type="button"
-                    class={`py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold ${
-                      poll.isActive ? 'bg-red-500' : 'bg-green-500'
-                    } text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800`}
-                    on:click={() => handleActivateClick(poll.id, poll.isActive)}
+                    class="py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800 {poll.isActive
+                      ? 'bg-red-500'
+                      : 'bg-green-500'}"
+                    on:click={() => handleActivateClick()}
                   >
-                    {poll.isActive ? 'Deactivate' : 'Activate'}
-                  </button>
+                    {#if poll.isActive}Deactivate {:else}Activate {/if}</button
+                  >
                   <button
                     type="button"
                     class="py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-                    on:click={() => handleEditClick(poll.id)}
+                    on:click={() => handleEditClick()}>Edit</button
                   >
-                    {'Edit'}
-                  </button>
                   <button
                     type="button"
                     class="py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-red-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-                    on:click={() => handleDeleteClick(poll.id)}
+                    on:click={() => handleDeleteClick()}>Delete</button
                   >
-                    {'Delete'}
-                  </button>
                 </td>
               </tr>
             {/each}
@@ -146,4 +108,4 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>

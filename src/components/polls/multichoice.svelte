@@ -1,103 +1,52 @@
 <script lang="ts">
   import { PollService } from '../../services/poll.service';
 
-  let options = [{ id: 1, title: '' }];
+  let options: string[] = [];
   let question: string = '';
-  let inputValues: string[] = options.map((option) => option.title);
+  // let inputValues: string[] = options.map((option) => option.title);
+  let inputValues: string[] = [''];
 
-  let isEdit: boolean = false; // Set as per your logic
-  let id: number | null = null; // Set as per your logic
-
-  const handleInput = (index: number, value: string) => {
+  let isEdit: boolean = false;
+  let id: number | null = null;
+  let index = 0; // Assuming index is defined somewhere
+  let value = ''; // Initialize the value
+  function handleInputChange(event: Event) {
+    const target = event.target as HTMLInputElement;
     const updatedOptions = [...options];
-    updatedOptions[index].title = value;
-    options = updatedOptions;
-  };
-
+    updatedOptions[index] = target.value;
+    options = updatedOptions; // Update the options array
+    console.log(options);
+  }
   const addOption = () => {
-    const newId = options.length + 1;
-    options = [...options, { id: newId, title: '' }];
+    options = [...options, ''];
     inputValues = [...inputValues, ''];
   };
 
   const removeOption = (index: number) => {
-    if (options.length > 1) {
-      options = options.filter((_, i) => i !== index);
-    }
+    // if (options.length > 1) {
+    options = options.filter((_, i) => i !== index);
+    inputValues = inputValues.filter((_, i) => i !== index);
+    // }
   };
 
-  function updateOption(index: number, value: string) {
-    const updatedOptions = [...options];
-    updatedOptions[index].title = value;
-    options = updatedOptions;
-  }
-
-  // const handleCreateClick = async () => {
-  //   try {
-  //     //       {
-  //     //   "id": 0,
-  //     //   "title": "string",
-  //     //   "isActive": true,
-  //     //   "date": "2023-11-21T06:59:35.114Z",
-  //     //   "uniqueId": "string",
-  //     //   "questions": [
-  //     //     {
-  //     //       "id": 0,
-  //     //       "pollId": 0,
-  //     //       "title": "string",
-  //     //       "questionType": 0,
-  //     //       "options": [
-  //     //         {
-  //     //           "id": 0,
-  //     //           "title": "string",
-  //     //           "questionId": 0
-  //     //         }
-  //     //       ]
-  //     //     }
-  //     //   ]
-  //     // }
-
-  //     const newPoll = {
-  //       title: question,
-  //       isActive: true,
-  //       options: options.map((option) => ({ ...option, questionId: 1 }))
-  //     };
-
-  //     const response = await PollService.createPoll(newPoll);
-  //     console.log('Poll created:', response);
-  //   } catch (error) {
-  //     console.error('Error creating poll:', error);
-  //   }
-  // };
   const handleCreateClick = async () => {
     try {
       const questions = [
         {
-          id: 0,
-          pollId: 0,
           title: question,
           questionType: 0,
-
           options: options.map((label) => ({
-            id: 0,
-            title: label,
-            questionId: 0
+            title: label
           }))
         }
       ];
 
       const data = {
-        // title: question,
-
-        id: 0,
-        title: 'string',
-        isActive: true,
-        date: '2023-11-21T06:59:35.114Z',
-        uniqueId: 'string',
-
+        title: question,
         questions: questions.map((label) => ({
           title: label.title,
-          questionType: 0,
+          questionType: label.questionType,
+
           options: label.options.map((label) => ({ title: label.title }))
         }))
       };
@@ -140,18 +89,14 @@
   />
 
   <h2 class="mt-2 mb-5 text-lg text-gray-900 font-bold">Options</h2>
-  {#each options as option, index (option.id)}
+  {#each inputValues as value, index (index)}
     <div class="flex inline-flex">
       <input
         type="text"
         class="py-3 px-5 mr-2 mb-5 block w-full border-solid border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
-        placeholder={`Option ${option.id}`}
-        value={inputValues[index]}
-        on:input={(e) => {
-          if (e.target instanceof HTMLInputElement) {
-            handleInput(index, e.target.value);
-          }
-        }}
+        placeholder={`Option ${index + 1}`}
+        {value}
+        on:input={handleInputChange}
       />
       <button
         type="button"
