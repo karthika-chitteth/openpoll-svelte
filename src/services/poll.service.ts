@@ -30,7 +30,7 @@ export namespace PollService {
     payload: TPollQuestion,
     id: number
   ): Promise<TResponse<TPoll[]>> => {
-    const response: TResponse<TPoll[]> = await ApiInstance.put(`/poll` + id, payload).then(
+    const response: TResponse<TPoll[]> = await ApiInstance.put(`/poll/` + id, payload).then(
       (res) => res.data
     );
     return response;

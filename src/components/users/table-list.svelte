@@ -1,6 +1,8 @@
 <script>
   import { onMount } from 'svelte';
   import { PollService } from '../../services/poll.service';
+  import { number } from 'svelte-i18n';
+  import { navigate } from 'svelte-routing';
 
   let polls = [];
 
@@ -14,16 +16,37 @@
     fetchData();
   });
 
-  const handleEditClick = async () => {
-    // Handle edit click
+  const handleEditClick = async (pollId) => {
+    navigate(`/edit-poll/${pollId}`);
   };
 
-  const handleDeleteClick = async () => {
-    // Handle delete click
+  const handleDeleteClick = async (pollId) => {
+    try {
+      await PollService.deletePoll(pollId);
+      polls = polls.filter((poll) => poll.id !== pollId);
+    } catch (error) {
+      console.error('Error deleting poll:', error);
+    }
   };
 
-  const handleActivateClick = async () => {
-    // Handle activate click
+  const handleActivateClick = async (pollId, isActive) => {
+    try {
+      // Toggle the activation status using the API or service
+      isActive ? await PollService.deactivatePoll(pollId) : await PollService.activatePoll(pollId);
+
+      // Update the polls list after successful status update
+      const updatedPolls = polls.map((poll) => {
+        if (poll.id === pollId) {
+          return { ...poll, isActive: !isActive };
+        }
+        return poll;
+      });
+
+      // Update the polls array with the updated data
+      polls = [...updatedPolls];
+    } catch (error) {
+      console.error('Error toggling poll status:', error);
+    }
   };
 </script>
 
@@ -86,19 +109,19 @@
                     class="py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800 {poll.isActive
                       ? 'bg-red-500'
                       : 'bg-green-500'}"
-                    on:click={() => handleActivateClick()}
+                    on:click={() => handleActivateClick(poll.id, poll.isActive)}
                   >
                     {#if poll.isActive}Deactivate {:else}Activate {/if}</button
                   >
                   <button
                     type="button"
                     class="py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-                    on:click={() => handleEditClick()}>Edit</button
+                    on:click={() => handleEditClick(poll.id)}>Edit</button
                   >
                   <button
                     type="button"
                     class="py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-red-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-                    on:click={() => handleDeleteClick()}>Delete</button
+                    on:click={() => handleDeleteClick(poll.id)}>Delete</button
                   >
                 </td>
               </tr>

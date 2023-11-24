@@ -9,5 +9,5 @@
   <BrandHeader />
   <Dashboard />
   <ListPoll />
-  <Footer />
+  <!-- <Footer /> -->
 </div>

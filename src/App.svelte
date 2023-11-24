@@ -20,7 +20,10 @@
   <Router {url}>
     <Route path="/"><Home /></Route>
     <Route path="/dashboard"><Dashboard /></Route>
-    <Route path="/users/create-poll"><CreatePoll /></Route>
+    <Route path="/users/create-poll"><CreatePoll isEdit={false} /></Route>
+    <Route path="/edit-poll/:pollId">
+      <CreatePoll isEdit={true} />
+    </Route>
     <Route path="/signup"><Signup /></Route>
   </Router>
 </div>
