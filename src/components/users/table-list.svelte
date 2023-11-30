@@ -1,26 +1,36 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
   import { PollService } from '../../services/poll.service';
-  import { number } from 'svelte-i18n';
+
   import { navigate } from 'svelte-routing';
 
-  let polls = [];
+  import type { TResponse } from '../../types/api.types';
+  import type { CreatePollResponse } from '../../types/poll.type';
+
+  let polls: CreatePollResponse[] = []; // Initialize as an empty array
 
   onMount(async () => {
     const fetchData = async () => {
-      const pollData = await PollService.listPoll();
-      polls = pollData.data;
-      console.log(polls);
+      const pollData: TResponse<CreatePollResponse | CreatePollResponse[]> =
+        await PollService.listPoll();
+      if (pollData.data !== undefined) {
+        if (Array.isArray(pollData.data)) {
+          polls = pollData.data;
+        } else {
+          polls = [pollData.data];
+        }
+      }
+      console.log('pollData', pollData);
     };
 
     fetchData();
   });
 
-  const handleEditClick = async (pollId) => {
+  const handleEditClick = async (pollId: number) => {
     navigate(`/edit-poll/${pollId}`);
   };
 
-  const handleDeleteClick = async (pollId) => {
+  const handleDeleteClick = async (pollId: number) => {
     try {
       await PollService.deletePoll(pollId);
       polls = polls.filter((poll) => poll.id !== pollId);
@@ -29,7 +39,7 @@
     }
   };
 
-  const handleActivateClick = async (pollId, isActive) => {
+  const handleActivateClick = async (pollId: number, isActive: boolean) => {
     try {
       // Toggle the activation status using the API or service
       isActive ? await PollService.deactivatePoll(pollId) : await PollService.activatePoll(pollId);
