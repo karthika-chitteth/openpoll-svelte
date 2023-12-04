@@ -1,8 +1,14 @@
 <script>
   import PollDetailsContent from '../../components/polls/poll-details-content.svelte';
   import TopBar from '../../components/top-bar.svelte';
+  let token = '';
 
-  const token = localStorage.getItem('value');
+  const storedData = localStorage.getItem('openpoll_user');
+  if (storedData) {
+    const data = JSON.parse(storedData);
+    token = data.token;
+    console.log('token', data);
+  }
 </script>
 
 {#if token !== null}

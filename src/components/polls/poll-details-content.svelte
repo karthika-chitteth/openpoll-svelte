@@ -1,24 +1,52 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
   import { useLocation } from 'svelte-routing';
   import { PollService } from '../../services/poll.service';
+  import { writable } from 'svelte/store';
 
-  let location = useLocation();
-  let pollTitle = location.state?.actiivatePoll.data?.title;
-  let { id } = useParams();
+  // interface Params {
+  //   [key: string]: string; // Define the index signature for params
+  // }
 
-  let poll;
-
-  const getPollDetails = async (id) => {
-    if (id) {
-      const pollData = await PollService.getPolls(+id);
-      poll = pollData;
+  function getParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const params: any = {}; // Use the defined type
+    for (const [key, value] of urlParams) {
+      params[key] = value;
     }
-  };
+    return params;
+  }
 
+  export const urlParams = writable(getParams());
+
+  export function updateUrlParams() {
+    const params = getParams();
+    urlParams.set(params);
+  }
+  console.log(urlParams, 'urlParams');
+
+  // Call updateUrlParams to update the store whenever needed
   onMount(() => {
-    getPollDetails(id);
+    // Perform actions that may change URL parameters
+    // After that, call updateUrlParams() to update the store
+    // updateUrlParams();
   });
+
+  // let pollTitle = location.state?.actiivatePoll.data?.title;
+  // let { id } = useParams();
+
+  // let poll;
+
+  // const getPollDetails = async (id) => {
+  //   if (id) {
+  //     const pollData = await PollService.getPolls(+id);
+  //     poll = pollData;
+  //   }
+  // };
+
+  // onMount(() => {
+  //   getPollDetails(id);
+  // });
 </script>
 
 <div class="max-w-[85rem] mx-auto px-4 sm:px-4 lg:px-4 mt-5">
@@ -27,9 +55,10 @@
       <h1
         class="block text-3xl font-bold text-gray-800 sm:text-4xl md:text-5xl lg:text-6xl dark:text-white mb-5"
       >
-        {pollTitle}
+        <!-- {pollTitle} -->dsfs
       </h1>
-      <a class="mt-5 text-lg text-blue-500 dark:text-blue-100" href={`/poll/${poll?.uniqueId}`}>
+      <a class="mt-5 text-lg text-blue-500 dark:text-blue-100" href="#">
+        <!-- {`/poll/${poll?.uniqueId}`} -->
         Poll here
       </a>
 
@@ -47,8 +76,9 @@
     </div>
     <a
       class="py-2 px-3 my-5 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-      href={`/poll/result/${id}`}
+      href="#"
     >
+      <!-- {`/poll/result/${id}`} -->
       Result
     </a>
   </div>

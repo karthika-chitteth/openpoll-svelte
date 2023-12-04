@@ -2,6 +2,7 @@
 <script>
   import { Router, Link, Route } from 'svelte-routing';
   import Home from './pages/public/home.svelte';
+  import PollDetails from './pages/polls/poll-details.svelte';
   import Dashboard from './pages/public/dashboard.svelte';
   export let url = '';
   import { setupI18n } from './services/i18n';
@@ -23,6 +24,9 @@
     <Route path="/users/create-poll"><CreatePoll isEdit={false} /></Route>
     <Route path="/edit-poll/:pollId">
       <CreatePoll isEdit={true} />
+    </Route>
+    <Route path="/users/poll-details/:pollId">
+      <PollDetails />
     </Route>
     <Route path="/signup"><Signup /></Route>
   </Router>
