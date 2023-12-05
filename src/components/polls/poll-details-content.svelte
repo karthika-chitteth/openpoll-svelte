@@ -1,52 +1,28 @@
-<script lang="ts">
+<script>
   import { onMount } from 'svelte';
   import { useLocation } from 'svelte-routing';
   import { PollService } from '../../services/poll.service';
-  import { writable } from 'svelte/store';
+  import QRCodeGenerator from '../polls/QRCodeGenerator.svelte';
 
-  // interface Params {
-  //   [key: string]: string; // Define the index signature for params
-  // }
-
-  function getParams() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const params: any = {}; // Use the defined type
-    for (const [key, value] of urlParams) {
-      params[key] = value;
-    }
-    return params;
-  }
-
-  export const urlParams = writable(getParams());
-
-  export function updateUrlParams() {
-    const params = getParams();
-    urlParams.set(params);
-  }
-  console.log(urlParams, 'urlParams');
-
-  // Call updateUrlParams to update the store whenever needed
-  onMount(() => {
-    // Perform actions that may change URL parameters
-    // After that, call updateUrlParams() to update the store
-    // updateUrlParams();
-  });
+  export let id;
+  console.log(id);
 
   // let pollTitle = location.state?.actiivatePoll.data?.title;
   // let { id } = useParams();
 
-  // let poll;
+  let poll;
 
-  // const getPollDetails = async (id) => {
-  //   if (id) {
-  //     const pollData = await PollService.getPolls(+id);
-  //     poll = pollData;
-  //   }
-  // };
+  const getPollDetails = async (id) => {
+    if (id) {
+      const pollData = await PollService.getPolls(+id);
+      poll = pollData;
+      console.log(poll);
+    }
+  };
 
-  // onMount(() => {
-  //   getPollDetails(id);
-  // });
+  onMount(() => {
+    getPollDetails(id);
+  });
 </script>
 
 <div class="max-w-[85rem] mx-auto px-4 sm:px-4 lg:px-4 mt-5">
@@ -57,8 +33,8 @@
       >
         <!-- {pollTitle} -->dsfs
       </h1>
-      <a class="mt-5 text-lg text-blue-500 dark:text-blue-100" href="#">
-        <!-- {`/poll/${poll?.uniqueId}`} -->
+      <a class="mt-5 text-lg text-blue-500 dark:text-blue-100" href={`/poll/${poll?.uniqueId}`}>
+        <!--  -->
         Poll here
       </a>
 
@@ -72,13 +48,12 @@
     </div>
 
     <div class="lg:col-span-12 mt-10 lg:mt-0">
-      <!-- <QRCodeGenerator /> -->
+      <QRCodeGenerator />
     </div>
     <a
       class="py-2 px-3 my-5 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-      href="#"
+      href={`/poll/result/${id}`}
     >
-      <!-- {`/poll/result/${id}`} -->
       Result
     </a>
   </div>

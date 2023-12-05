@@ -25,8 +25,8 @@
     <Route path="/edit-poll/:pollId">
       <CreatePoll isEdit={true} />
     </Route>
-    <Route path="/users/poll-details/:pollId">
-      <PollDetails />
+    <Route path="/users/poll-details/:id" let:params>
+      <PollDetails id={params.id} />
     </Route>
     <Route path="/signup"><Signup /></Route>
   </Router>

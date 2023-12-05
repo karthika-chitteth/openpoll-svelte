@@ -1,6 +1,7 @@
 <script>
   import PollDetailsContent from '../../components/polls/poll-details-content.svelte';
   import TopBar from '../../components/top-bar.svelte';
+  export let id;
   let token = '';
 
   const storedData = localStorage.getItem('openpoll_user');
@@ -13,7 +14,7 @@
 
 {#if token !== null}
   <TopBar />
-  <PollDetailsContent />
+  <PollDetailsContent {id} />
 {:else}
   <TopBar />
   <div class="max-w-[85rem] w-full mx-auto px-4 mt-5 flex flex-col">
