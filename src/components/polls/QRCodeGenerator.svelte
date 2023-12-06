@@ -1,21 +1,24 @@
+<!-- QRCode.svelte -->
+<script lang="ts">
+  import { onMount } from 'svelte';
+  import QRCode from 'qrcode';
+  export let uniqueId;
+  let qrData = '/poll/' + uniqueId;
+  let qrImageUrl = '';
 
-import { useLocation } from 'svelte-routing';
-function QRCode(props: { value: string; size: number }) {
-  // Define the QRCode component. You can customize its appearance here.
-  return (
-    <img
-      alt="QR Code"
-      src={`https://api.qrserver.com/v1/create-qr-code/?data=${props.value}&size=${props.size}x${props.size}`}
-    />
-  );
-}
+  onMount(async () => {
+    try {
+      qrImageUrl = await QRCode.toDataURL(qrData);
+    } catch (error) {
+      console.error('Error generating QR code:', error);
+    }
+  });
+</script>
 
-function QRCodeGenerator() {
-  const location = useLocation();
-  const uniqueId = location.state?.actiivatePoll.data?.uniqueId;
-  const qrCodeValue = "/users/" + uniqueId;
-
-  return <div>{qrCodeValue && <QRCode value={qrCodeValue} size={508} />}</div>;
-}
-
-export default QRCodeGenerator;
+<div>
+  {#if qrImageUrl}
+    <img src={qrImageUrl} alt="QR Code" />
+  {:else}
+    <p>Generating QR Code...</p>
+  {/if}
+</div>

@@ -3,20 +3,20 @@
   import { useLocation } from 'svelte-routing';
   import { PollService } from '../../services/poll.service';
   import QRCodeGenerator from '../polls/QRCodeGenerator.svelte';
-
+  import { writable } from 'svelte/store';
   export let id;
   console.log(id);
 
   // let pollTitle = location.state?.actiivatePoll.data?.title;
   // let { id } = useParams();
 
-  let poll;
+  let poll = writable({});
 
   const getPollDetails = async (id) => {
     if (id) {
       const pollData = await PollService.getPolls(+id);
-      poll = pollData;
-      console.log(poll);
+      poll.set(pollData);
+      console.log('poll', poll);
     }
   };
 
@@ -31,9 +31,9 @@
       <h1
         class="block text-3xl font-bold text-gray-800 sm:text-4xl md:text-5xl lg:text-6xl dark:text-white mb-5"
       >
-        <!-- {pollTitle} -->dsfs
+        {$poll && $poll.title ? $poll.title : ''}
       </h1>
-      <a class="mt-5 text-lg text-blue-500 dark:text-blue-100" href={`/poll/${poll?.uniqueId}`}>
+      <a class="mt-5 text-lg text-blue-500 dark:text-blue-100" href={`/poll/${$poll?.uniqueId}`}>
         <!--  -->
         Poll here
       </a>
