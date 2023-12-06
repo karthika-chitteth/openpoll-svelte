@@ -27,6 +27,7 @@
       if (response) {
         navigate('/dashboard');
       }
+      localStorage.setItem('token', response.data.token);
     } catch (error: unknown) {
       if (error instanceof yup.ValidationError) {
         error.inner.forEach((err: yup.ValidationError) => {
