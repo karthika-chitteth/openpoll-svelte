@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
   import PollDetailsContent from '../../components/polls/poll-details-content.svelte';
   import TopBar from '../../components/top-bar.svelte';
-  export let id;
+  export let id: string;
   let token = '';
 
   const storedData = localStorage.getItem('openpoll_user');
