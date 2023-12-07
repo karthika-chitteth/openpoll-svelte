@@ -98,7 +98,7 @@
                                       dark:border-gray-700 dark:text-gray-400"
                   placeholder="example@opentrends.net"
                 />
-                <p class="hidden text-xs text-red-600 mt-2" id="email-error">
+                <p class="text-xs text-red-600 mt-2" id="email-error">
                   {formErrors.email}
                 </p>
                 <div
@@ -121,7 +121,7 @@
                                       dark:border-gray-700 dark:text-gray-400"
                   placeholder="Username"
                 />
-                <p class="hidden text-xs text-red-600 mt-2" id="email-error">
+                <p class="text-xs text-red-600 mt-2" id="email-error">
                   {formErrors.name}
                 </p>
                 <div
@@ -145,7 +145,7 @@
                                       dark:border-gray-700 dark:text-gray-400"
                   placeholder="**********"
                 />
-                <p class="hidden text-xs text-red-600 mt-2" id="password-error">
+                <p class="text-xs text-red-600 mt-2" id="password-error">
                   {formErrors.password}
                 </p>
                 <div
@@ -181,7 +181,7 @@
                                       dark:border-gray-700 dark:text-gray-400"
                   placeholder="**********"
                 />
-                <p class="hidden text-xs text-red-600 mt-2" id="confirm-password-error">
+                <p class="text-xs text-red-600 mt-2" id="confirm-password-error">
                   {formErrors.confirmPassword}
                 </p>
                 <div
@@ -203,7 +203,7 @@
               </div>
               <p class="text-xs text-red-600 mt-2" id="confirm-password-error"></p>
             </div>
-
+            <div class="errormessage">{errormsg}</div>
             <button
               type="submit"
               class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"

@@ -9,10 +9,10 @@
     email: '',
     password: ''
   };
-  const FormErrors = writable({
+  let formErrors ={
     email: '',
     password: ''
-  });
+  };
   let errormsg = writable('');
   async function submitForm(event: SubmitEvent) {
     event.preventDefault();
@@ -31,10 +31,11 @@
       if (error instanceof yup.ValidationError) {
         error.inner.forEach((err: yup.ValidationError) => {
           const propertyName = err.path?.toString() as string;
-          FormErrors.update((prevErrors) => ({
-            ...prevErrors,
+          formErrors = {
+            ...formErrors,
             [propertyName]: err.message
-          }));
+          };
+          console.log(formErrors, 'formErrors');
         });
       }
     }
@@ -83,7 +84,9 @@
                   class="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3"
                 />
               </div>
-              <p class="hidden text-xs text-red-600 mt-2" id="email-error" />
+              <p class="text-xs text-red-600 mt-2" id="email-error">
+                {formErrors.email}
+              </p>
             </div>
 
             <div>
@@ -114,7 +117,9 @@
                   </svg>
                 </div>
               </div>
-              <p class=" text-xs text-red-600 mt-2" id="password-error" />
+              <p class="text-xs text-red-600 mt-2" id="email-error">
+                {formErrors.password}
+              </p>
             </div>
             <div class="errormessage">{$errormsg}</div>
             <button
