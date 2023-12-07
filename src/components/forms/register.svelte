@@ -50,8 +50,10 @@
             ...formErrors,
             [propertyName]: err.message
           };
-        let errormsg= error.response.data.error;
         });
+      }
+      else{
+        errormsg=error.response.data.error;
       }
     }
   }
@@ -219,9 +221,11 @@
 
 <style>
   .errormessage {
-    padding: 7px 51px;
+    padding: 0;
     margin: 0;
     color: red;
-    font-weight: 500;
+    display: block;
+    font-size: 12px;
+    line-height: 0.2;
   }
 </style>
