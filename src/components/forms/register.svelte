@@ -42,7 +42,7 @@
         navigate('/dashboard');
       }
       localStorage.setItem('token', response.data.token);
-    } catch (error: any) {    
+    } catch (error: any) {
       if (error instanceof yup.ValidationError) {
         error.inner.forEach((err: yup.ValidationError) => {
           const propertyName = err.path?.toString() as string;
@@ -51,9 +51,8 @@
             [propertyName]: err.message
           };
         });
-      }
-      else{
-        errormsg=error.response.data.error;
+      } else {
+        errormsg = error.response.data.error;
       }
     }
   }
