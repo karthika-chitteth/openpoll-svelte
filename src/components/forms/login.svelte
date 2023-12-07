@@ -4,7 +4,6 @@
   import { LoginSchema } from '../../schema/auth/login.schema';
   import { UserService } from '../../services/user.service';
   import { writable } from 'svelte/store';
-  import axios from 'axios';
 
   let formData = {
     email: '',
@@ -37,8 +36,6 @@
             [propertyName]: err.message
           }));
         });
-      } else if (axios.isAxiosError(error)) {
-        errormsg.set(`${error.response?.data?.error}`);
       }
     }
   }
@@ -72,7 +69,6 @@
         <form on:submit={submitForm}>
           <div class="grid gap-y-4">
             <div>
-              <!-- svelte-ignore a11y-label-has-associated-control -->
               <label class="block text-sm mb-2 dark:text-white"> Email address </label>
               <div class="relative">
                 <input
@@ -91,7 +87,6 @@
             </div>
 
             <div>
-              <!-- svelte-ignore a11y-label-has-associated-control -->
               <label class="block text-sm mb-2 dark:text-white"> Password </label>
               <div class="relative">
                 <input

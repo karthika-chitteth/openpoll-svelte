@@ -3,32 +3,40 @@
   import { RegisterSchema } from '../../schema/auth/register.schema';
   import { navigate } from 'svelte-routing';
   import * as yup from 'yup';
-  import { writable } from 'svelte/store';
-  import axios from 'axios';
 
   let formData = {
     name: '',
     email: '',
     password: '',
-    confirmpassword: ''
+    confirmPassword: ''
   };
-  const FormErrors = writable({
+
+  let formErrors = {
     email: '',
     name: '',
     password: '',
     confirmPassword: ''
-  });
-  let errormsg = writable('');
+  };
+
+  let errormsg = '';
+
   async function formSubmit(event: SubmitEvent) {
     event.preventDefault();
     let response;
     try {
+      formErrors = {
+        email: '',
+        name: '',
+        password: '',
+        confirmPassword: ''
+      };
+
       await RegisterSchema.validate(formData, { abortEarly: false });
       response = await UserService.register({
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        confirmpassword: formData.confirmpassword
+        confirmpassword: formData.confirmPassword
       });
       if (response) {
         navigate('/dashboard');
@@ -38,18 +46,18 @@
       if (error instanceof yup.ValidationError) {
         error.inner.forEach((err: yup.ValidationError) => {
           const propertyName = err.path?.toString() as string;
-          FormErrors.update((prevErrors) => ({
-            ...prevErrors,
+          formErrors = {
+            ...formErrors,
             [propertyName]: err.message
-          }));
+          };
+          console.log(formErrors, 'formErrors');
         });
-      } else if (axios.isAxiosError(error)) {
-        errormsg.set(`${error.response?.data?.error}`);
       }
     }
   }
+
   function clearErrorMessage() {
-    errormsg.set('');
+    errormsg = '';
   }
 </script>
 
@@ -75,10 +83,9 @@
           Or
         </div>
 
-        <form on:submit={formSubmit}> 
+        <form on:submit={formSubmit}>
           <div class="grid gap-y-4">
             <div>
-              <!-- svelte-ignore a11y-label-has-associated-control -->
               <label class="block text-sm mb-2 dark:text-white"> Email address </label>
               <div class="relative">
                 <input
@@ -92,7 +99,7 @@
                   placeholder="example@opentrends.net"
                 />
                 <p class="hidden text-xs text-red-600 mt-2" id="email-error">
-                  {$FormErrors.email}
+                  {formErrors.email}
                 </p>
                 <div
                   class="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3"
@@ -115,7 +122,7 @@
                   placeholder="Username"
                 />
                 <p class="hidden text-xs text-red-600 mt-2" id="email-error">
-                  {$FormErrors.name}
+                  {formErrors.name}
                 </p>
                 <div
                   class="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3"
@@ -138,8 +145,8 @@
                                       dark:border-gray-700 dark:text-gray-400"
                   placeholder="**********"
                 />
-                <p class="hidden text-xs text-red-600 mt-2" id="email-error">
-                  {$FormErrors.password}
+                <p class="hidden text-xs text-red-600 mt-2" id="password-error">
+                  {formErrors.password}
                 </p>
                 <div
                   class="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3"
@@ -162,21 +169,20 @@
             </div>
 
             <div>
-              <!-- svelte-ignore a11y-label-has-associated-control -->
               <label class="block text-sm mb-2 dark:text-white"> Confirm Password </label>
               <div class="relative">
                 <input
                   name="confirmPassword"
                   type="password"
-                  bind:value={formData.confirmpassword}
+                  bind:value={formData.confirmPassword}
                   on:focus={clearErrorMessage}
                   class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm
                                       focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900
                                       dark:border-gray-700 dark:text-gray-400"
                   placeholder="**********"
                 />
-                <p class="hidden text-xs text-red-600 mt-2" id="email-error">
-                  {$FormErrors.confirmPassword}
+                <p class="hidden text-xs text-red-600 mt-2" id="confirm-password-error">
+                  {formErrors.confirmPassword}
                 </p>
                 <div
                   class="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3"
