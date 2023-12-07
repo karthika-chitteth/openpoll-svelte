@@ -4,6 +4,7 @@
   import { navigate } from 'svelte-routing';
   import * as yup from 'yup';
   import { writable } from 'svelte/store';
+  import axios from 'axios';
 
   let formData = {
     name: '',
@@ -17,6 +18,7 @@
     password: '',
     confirmPassword: ''
   });
+  let errormsg = writable('');
   async function formSubmit(event: SubmitEvent) {
     event.preventDefault();
     let response;
@@ -41,8 +43,13 @@
             [propertyName]: err.message
           }));
         });
+      } else if (axios.isAxiosError(error)) {
+        errormsg.set(`${error.response?.data?.error}`);
       }
     }
+  }
+  function clearErrorMessage() {
+    errormsg.set('');
   }
 </script>
 
@@ -50,7 +57,7 @@
 <body class="dark:bg-slate-900 bg-[#1F1C46] flex h-full items-baseline py-16">
   <main class="w-full max-w-md mx-auto p-6">
     <div
-      class="mt-7 bg-gray-200 bg-white bg-gray-300 border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
+      class="mt-7 bg-zinc-200 bg-white bg-gray-300 border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
     >
       <div class="p-4 sm:p-7">
         <div class="text-center">
@@ -59,7 +66,7 @@
             Already have an account?
             <a
               class="text-blue-600 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
-              href="../examples/html/signin.html"
+              href="/signin"
             >
               Sign in here
             </a>
@@ -83,21 +90,35 @@
                   <input
                     type="email"
                     bind:value={formData.email}
+                    on:focus={clearErrorMessage}
                     placeholder="Enter your email"
                     class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                     required
                     aria-describedby="email-error"
                   />
+                  <p
+                      class="hidden text-xs text-red-600 mt-2"
+                      id="email-error"
+                    >
+                      {$FormErrors.email}
+                    </p>
                   <label for="name" class="block text-sm mb-2 dark:text-white">Name</label>
                   <div class="relative">
                     <input
                       type="text"
                       placeholder="Enter you name"
                       bind:value={formData.name}
+                      on:focus={clearErrorMessage}
                       class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                       required
                       aria-describedby="name-error"
                     />
+                    <p
+                      class="hidden text-xs text-red-600 mt-2"
+                      id="name-error"
+                    >
+                      {$FormErrors.name}
+                    </p>
                     <div
                       class="hidden absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
                     >
@@ -128,11 +149,18 @@
                     <input
                       type="password"
                       bind:value={formData.password}
+                      on:focus={clearErrorMessage}
                       placeholder="Must be at least 8 characters"
                       class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
                       required
                       aria-describedby="password-error"
                     />
+                    <p
+                      class="text-xs text-red-600 mt-2"
+                      id="confirm-password-error"
+                    >
+                      {$FormErrors.password}
+                    </p>
                     <div
                       class="hidden absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3"
                     >
@@ -165,6 +193,7 @@
                     <input
                       type="password"
                       bind:value={formData.confirmpassword}
+                      on:focus={clearErrorMessage}
                       id="confirm-password"
                       placeholder="confirm password"
                       class="py-3 px-4 block w-full border-gray-200 rounded-lg text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400 dark:focus:ring-gray-600"
@@ -193,11 +222,10 @@
                   </p>
                 </div>
                 <!-- End Form Group -->
-
+                <div class="errormessage">{$errormsg}</div>
                 <!-- Checkbox -->
                 <div class="flex items-center">
                   <!-- End Checkbox -->
-
                   <button
                     type="submit"
                     class="w-full py-3 mt-6 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold rounded-lg border border-transparent bg-blue-600 text-white hover:bg-blue-700 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
@@ -213,5 +241,12 @@
     </div>
   </main>
 </body>
+
 <style>
+  .errormessage {
+    padding: 7px 51px;
+    margin: 0;
+    color: red;
+    font-weight: 500;
+  }
 </style>

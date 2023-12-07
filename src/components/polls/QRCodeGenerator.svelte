@@ -3,6 +3,7 @@
   import { onMount } from 'svelte';
   import QRCode from 'qrcode';
   export let uniqueId;
+  console.log(uniqueId,"uniqueId");
   let qrData = '/poll/' + uniqueId;
   let qrImageUrl = '';
 
