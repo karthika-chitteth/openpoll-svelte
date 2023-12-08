@@ -121,7 +121,9 @@
                       : 'bg-green-500'}"
                     on:click={() => handleActivateClick(poll.id, poll.isActive)}
                   >
-                    {#if poll.isActive}Deactivate {:else}Activate {/if}</button
+                    {#if poll.isActive}Deactivate
+                    {:else}Activate
+                    {/if}</button
                   >
                   <button
                     type="button"

@@ -1,9 +1,14 @@
-<script>
+<script lang="ts">
   // @ts-nocheck
-
   import logo from '../assets/logo.svg';
+  import { navigate } from 'svelte-routing';
+
+  const storedValue = localStorage.getItem('openpoll_user');
+  const userObject = storedValue ? JSON.parse(storedValue) : null;
+  const userName = userObject ? userObject.name : null;
   const handleLogout = () => {
-    console.log('logout');
+    localStorage.clear();
+    navigate('/signin');
   };
 </script>
 
@@ -89,7 +94,7 @@
         <div
           class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold text-white outline-none transition-all text-sm"
         >
-          <!-- {value === null ? value : storedValue}test -->
+          {userName}
         </div>
       </div>
     </div>

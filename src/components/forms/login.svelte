@@ -3,18 +3,16 @@
   import * as yup from 'yup';
   import { LoginSchema } from '../../schema/auth/login.schema';
   import { UserService } from '../../services/user.service';
-  import { writable } from 'svelte/store';
-  import axios from 'axios';
 
   let formData = {
     email: '',
     password: ''
   };
-  const FormErrors = writable({
+  let formErrors = {
     email: '',
     password: ''
-  });
-  let errormsg = writable('');
+  };
+  let errormsg = '';
   async function submitForm(event: SubmitEvent) {
     event.preventDefault();
     let response;
@@ -27,22 +25,23 @@
       if (response) {
         navigate('/dashboard');
       }
-    } catch (error: unknown) {
+      localStorage.setItem('token', response.data.token);
+    } catch (error: any) {
       if (error instanceof yup.ValidationError) {
         error.inner.forEach((err: yup.ValidationError) => {
           const propertyName = err.path?.toString() as string;
-          FormErrors.update((prevErrors) => ({
-            ...prevErrors,
+          formErrors = {
+            ...formErrors,
             [propertyName]: err.message
-          }));
+          };
         });
-      } else if (axios.isAxiosError(error)) {
-        errormsg.set(`${error.response?.data?.error}`);
+      } else {
+        errormsg = error.response.data.error;
       }
     }
   }
   function clearErrorMessage() {
-    errormsg.set('');
+    errormsg = '';
   }
 </script>
 
@@ -71,7 +70,6 @@
         <form on:submit={submitForm}>
           <div class="grid gap-y-4">
             <div>
-              <!-- svelte-ignore a11y-label-has-associated-control -->
               <label class="block text-sm mb-2 dark:text-white"> Email address </label>
               <div class="relative">
                 <input
@@ -86,11 +84,12 @@
                   class="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3"
                 />
               </div>
-              <p class="hidden text-xs text-red-600 mt-2" id="email-error" />
+              <p class="text-xs text-red-600 mt-2" id="email-error">
+                {formErrors.email}
+              </p>
             </div>
 
             <div>
-              <!-- svelte-ignore a11y-label-has-associated-control -->
               <label class="block text-sm mb-2 dark:text-white"> Password </label>
               <div class="relative">
                 <input
@@ -118,9 +117,11 @@
                   </svg>
                 </div>
               </div>
-              <p class=" text-xs text-red-600 mt-2" id="password-error" />
+              <p class="text-xs text-red-600 mt-2" id="email-error">
+                {formErrors.password}
+              </p>
             </div>
-            <div class="errormessage">{$errormsg}</div>
+            <div class="errormessage">{errormsg}</div>
             <button
               type="submit"
               class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
@@ -136,9 +137,11 @@
 
 <style>
   .errormessage {
-    padding: 7px 51px;
+    padding: 0;
     margin: 0;
     color: red;
-    font-weight: 500;
+    display: block;
+    font-size: 12px;
+    line-height: 0.2;
   }
 </style>
