@@ -12,10 +12,23 @@ const ApiInstance: AxiosInstance = axios.create({
 ApiInstance.interceptors.request.use(
   (config) => {
     console.log(config.baseURL);
-    const user: TUser = JSON.parse(localStorage.getItem('user') ?? '{}');
-    if (user?.uniqueId) {
-      config.headers.Token = user.uniqueId;
+    // const user: TUser = JSON.parse(localStorage.getItem('user') ?? '{}');
+    // if (user?.uniqueId) {
+    //   config.headers.Token = user.uniqueId;
+    // }
+
+    const userDataString = localStorage.getItem('openpoll_user');
+    if (userDataString) {
+      // Parse the JSON string to an object
+      const userData = JSON.parse(userDataString);
+      const token = userData.token;
+      console.log(token);
+      if (token) {
+        config.headers['Authorization'] = 'Bearer ' + token;
+      }
+      return config;
     }
+
     return config;
   },
   (error) => {
