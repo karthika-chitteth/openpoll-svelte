@@ -1,11 +1,12 @@
 import type { TResponse } from '../types/api.types';
 import type {
   CreatePollResponse,
+  PollQuestionResponse,
   PollVoteResponse,
   PublishPollResponse,
   TPoll,
   TPollQuestion,
-  VoteResponse
+  VoteResponse,
 } from '../types/poll.type';
 import ApiInstance from './api.service';
 
@@ -62,13 +63,12 @@ export namespace PollService {
     ).then((res) => res.data);
     return response;
   };
-  // export const getQuestion = async (id: string): Promise<TResponse<PollQuestionResponse>> => {
-  //   const response: TResponse<PollQuestionResponse> = await ApiInstance.get(
-  //     `/Poll/GetPublishedPoll/` + id
-  //   ).then((res) => res.data);
-  //   return response;
-  // };
-
+  export const getQuestion = async (id: string): Promise<TResponse<PollQuestionResponse>> => {
+    const response: TResponse<PollQuestionResponse> = await ApiInstance.get(
+      `/Poll/GetPublishedPoll/` + id
+    ).then((res) => res.data);
+    return response;
+  };
   // export const vote = async (payload: VotePayload): Promise<TResponse<VoteResponse>> => {
   //   const response: TResponse<VoteResponse> = await ApiInstance.post(`/vote`, payload).then(
   //     (res) => res.data
