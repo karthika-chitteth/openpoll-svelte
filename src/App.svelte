@@ -16,6 +16,7 @@
   import AudienceLogin from './pages/audience/audience-login.svelte';
   import UserPoll from './components/polls/user-poll.svelte';
   import Userpoll from './pages/polls/userpoll.svelte';
+  import PollResult from './pages/polls/poll-result.svelte';
 
   // ...
   _Language.subscribe((lang) => {
@@ -29,6 +30,7 @@
     <Route path="/dashboard"><Dashboard /></Route>
     <Route path="/users/create-poll"><CreatePoll isEdit={false} /></Route>
     <Route path="/poll/:id"><AudiencePoll /></Route>
+    <Route path="/poll/result/:id"><PollResult /></Route>
     <Route path="/edit-poll/:pollId">
       <CreatePoll isEdit={true} />
     </Route>
