@@ -2,9 +2,10 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import QRCode from 'qrcode';
+  let baseurl = import.meta.env.VITE_BASE_URL;
   export let uniqueId;
-  console.log(uniqueId,"uniqueId");
-  let qrData = '/poll/' + uniqueId;
+  console.log(baseurl, 'baseurl');
+  let qrData = baseurl + 'poll/' + uniqueId;
   let qrImageUrl = '';
 
   onMount(async () => {
@@ -18,8 +19,14 @@
 
 <div>
   {#if qrImageUrl}
-    <img src={qrImageUrl} alt="QR Code" />
+    <img src={qrImageUrl} alt="QR Code" class="qr-code" />
   {:else}
     <p>Generating QR Code...</p>
   {/if}
 </div>
+
+<style>
+  .qr-code {
+    width: 500px;
+  }
+</style>

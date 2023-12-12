@@ -1,20 +1,16 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
-  import { useLocation } from 'svelte-routing';
   import { PollService } from '../../services/poll.service';
   import QRCodeGenerator from '../polls/QRCodeGenerator.svelte';
   import { writable } from 'svelte/store';
-  export let id;
+  export let id: String;
   console.log(id);
-
-  // let pollTitle = location.state?.actiivatePoll.data?.title;
-  // let { id } = useParams();
 
   let poll = writable({});
 
-  const getPollDetails = async (id) => {
+  const getPollDetails = async (id: String) => {
     if (id) {
-      const pollData = await PollService.getPolls(+id);
+      let pollData = await PollService.getPolls(+id);
       poll.set(pollData);
       console.log('poll', poll);
     }
@@ -48,8 +44,13 @@
     </div>
 
     <div class="lg:col-span-12 mt-10 lg:mt-0">
-      <QRCodeGenerator uniqueId={$poll?.uniqueId}/>
+      {#if $poll && $poll.uniqueId}
+        <QRCodeGenerator uniqueId={$poll.uniqueId} />
+      {:else}
+        <p>Loading...</p>
+      {/if}
     </div>
+
     <a
       class="py-2 px-3 my-5 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
       href={`/poll/result/${id}`}

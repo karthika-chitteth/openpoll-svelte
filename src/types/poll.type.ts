@@ -13,13 +13,6 @@ export type TPollQuestion = {
   isActive?: boolean;
   options?: TPollQuestionOption[];
 };
-
-export type TPollQuestionOption = {
-  id: number;
-  title: string;
-  questionId: number;
-};
-
 export interface CreatePollResponse {
   id: number;
   title: string;
@@ -28,6 +21,12 @@ export interface CreatePollResponse {
   questions: Questions[];
   uniqueId?: string;
 }
+export type TPollQuestionOption = {
+  id: number;
+  title: string;
+  questionId: number;
+};
+
 interface Questions {
   id: number;
   pollId: number;
