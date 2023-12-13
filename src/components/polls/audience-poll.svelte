@@ -1,10 +1,12 @@
-<!-- <script>
-  import { getQuestion, vote } from '../../services/poll.service';
+<script lang="ts">
   import { onMount } from 'svelte';
+  import { PollService } from '../../services/poll.service';
+  import { PollSchema } from '../../schema/poll/poll.schema';
+  import type { PollQuestionResponse } from '../../types/poll.type';
   import * as yup from 'yup';
 
-  let id = undefined;
-  let data = null;
+  let data: PollQuestionResponse;
+  export let id: string;
   let formData = {
     pollId: 0,
     questionId: 0,
@@ -12,36 +14,42 @@
     selectedOption: 0,
     voterName: ''
   };
+
+  onMount(async () => {
+    fetchData();
+  });
   let formErrors = {
     selectedOption: null,
     voterName: null
   };
-
-  onMount(async () => {
-    const fetchData = async () => {
-      try {
-        const response = await getQuestion(String(id));
-        if (response && response.data) {
-          data = response.data;
-          setFormData({
-            pollId: data.id || 0,
-            questionId: data.questions[0]?.id || 0,
-            questionType: data.questions[0]?.questionType || 0,
-            selectedOption: 0,
-            voterName: ''
-          });
-        }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+  const fetchData = async () => {
+    try {
+      const response = await PollService.getQuestion(String(id));
+      if (response && response.data) {
+        data = response.data;
+        updateFormData();
+        console.log(formData);
+        console.log(data);
       }
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const updateFormData = () => {
+    formData = {
+      pollId: data.id || 0,
+      questionId: data.questions[0]?.id || 0,
+      questionType: data.questions[0]?.questionType || 0,
+      selectedOption: 0,
+      voterName: ''
     };
-    fetchData();
-  });
+  };
 
   async function handleSubmitClick() {
     try {
       await PollSchema.validate(formData, { abortEarly: false });
-      const response = await vote({
+      const response = await PollService.vote({
         pollId: formData.pollId,
         questionId: formData.questionId,
         questionType: formData.questionType,
@@ -49,9 +57,8 @@
         voterName: formData.voterName
       });
       localStorage.clear();
-      // You can navigate using Svelte's router or use a store to manage navigation state
       console.log('Response:', response);
-    } catch (error) {
+    } catch (error: unknown) {
       console.error(error);
       if (error instanceof yup.ValidationError) {
         error.inner.forEach((err) => {
@@ -63,8 +70,7 @@
       }
     }
   }
-
-  function handleChange(event) {
+  function handleChange(event: any) {
     const { name, value } = event.target;
     const numberValue = parseFloat(value) || 0;
     formData = { ...formData, [name]: numberValue };
@@ -81,7 +87,6 @@
       {#each data.questions[0].options as option (option.id)}
         <li
           class="inline-flex items-center gap-x-2 py-3 px-4 text-sm font-medium bg-white border text-gray-800 -mt-px"
-          key={option.id}
         >
           <div class="relative flex items-start w-full">
             <div class="flex items-center h-5">
@@ -90,9 +95,9 @@
                 name="selectedOption"
                 type="radio"
                 value={option.id}
-                checked={formData.selectedOption === option.id}
-                on:change={handleChange}
+                bind:group={formData.selectedOption}
                 class="border-gray-200 rounded dark:bg-gray-800 dark:border-gray-700 dark:checked:bg-blue-500 dark:checked:border-blue-500 dark:focus:ring-offset-gray-800"
+                on:change={handleChange}
               />
             </div>
             <label
@@ -117,5 +122,4 @@
       <div class="text-red-500">{formErrors.selectedOption}</div>
     {/if}
   </div>
-{/if} -->
-<p>a</p>
+{/if}

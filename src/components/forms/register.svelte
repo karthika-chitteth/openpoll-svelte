@@ -11,7 +11,7 @@
     confirmPassword: ''
   };
 
-  let formErrors = {
+  let formErrors = { 
     email: '',
     name: '',
     password: '',
@@ -133,7 +133,6 @@
             </div>
 
             <div>
-              <!-- svelte-ignore a11y-label-has-associated-control -->
               <label class="block text-sm mb-2 dark:text-white"> Password </label>
               <div class="relative">
                 <input

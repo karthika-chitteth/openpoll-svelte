@@ -27,6 +27,8 @@ export type TPollQuestionOption = {
   id: number;
   title: string;
   questionId: number;
+  questionType?:number;
+  options: TPollQuestionOption[];
 };
 
 export interface PublishPollResponse {
@@ -43,7 +45,7 @@ export interface PollQuestionResponse {
   isActive: boolean;
   userId: number;
   uniqueId: string;
-  questions: Questions[];
+  questions: TPollQuestionOption[];
 }
 export interface VoteResponse {
   pollId: number;
@@ -71,4 +73,12 @@ export interface Options {
   optionId: number;
   title: string;
   total: number;
+}
+export interface VotePayload {
+  id?: number;
+  pollId: number;
+  questionId: number;
+  questionType: number;
+  answer1: number;
+  voterName: string;
 }
