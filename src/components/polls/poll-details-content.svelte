@@ -4,16 +4,17 @@
   import QRCodeGenerator from '../polls/QRCodeGenerator.svelte';
   import { writable } from 'svelte/store';
   import type { TPoll } from '../../types/poll.type';
-  export let id: String;
+  export let id: string;
 
-  let poll = writable<TPoll | null>(null);
-  const getPollDetails = async (id: String) => {
+  let poll = writable<TPoll[]>([{}]);
+  // let poll = writable({});
+  const getPollDetails = async (id: string) => {
     if (id) {
       let pollData: TPoll[] = await PollService.getPolls(+id);
-      if (pollData.length > 0) {
-        poll.set(pollData[0]);
-        console.log('poll', poll);
-      }
+      // if (pollData.length > 0) {
+      poll.set(pollData);
+      console.log('poll', pollData);
+      // }
     }
   };
 
