@@ -1,29 +1,66 @@
-<script>
+<script lang="ts">
   import { onMount } from 'svelte';
+
   import { PollService } from '../../services/poll.service';
 
-  let polls = [];
+  import { navigate } from 'svelte-routing';
+
+  import type { TResponse } from '../../types/api.types';
+  import type { CreatePollResponse } from '../../types/poll.type';
+
+  let polls: CreatePollResponse[] = []; // Initialize as an empty array
 
   onMount(async () => {
     const fetchData = async () => {
-      const pollData = await PollService.listPoll();
-      polls = pollData.data;
-      console.log(polls);
+      const pollData: TResponse<CreatePollResponse | CreatePollResponse[]> =
+        await PollService.listPoll();
+      if (pollData.data !== undefined) {
+        if (Array.isArray(pollData.data)) {
+          polls = pollData.data;
+        } else {
+          polls = [pollData.data];
+        }
+      }
+      console.log('pollData', pollData);
     };
 
     fetchData();
   });
 
-  const handleEditClick = async () => {
-    // Handle edit click
+  const handleEditClick = async (pollId: number) => {
+    navigate(`/edit-poll/${pollId}`);
   };
 
-  const handleDeleteClick = async () => {
-    // Handle delete click
+  const handleDeleteClick = async (index: number, pollId: number) => {
+    try {
+      await PollService.deletePoll(pollId);
+      // const updatedPolls = [...polls];
+      polls.splice(index, 1);
+      // set(polls, updatedPolls);
+      polls = [...polls];
+    } catch (error) {
+      console.error('Error deleting poll:', error);
+    }
   };
 
-  const handleActivateClick = async () => {
-    // Handle activate click
+  const handleActivateClick = async (pollId: number, isActive: boolean) => {
+    try {
+      // Toggle the activation status using the API or service
+      isActive ? await PollService.deactivatePoll(pollId) : await PollService.activatePoll(pollId);
+
+      // Update the polls list after successful status update
+      const updatedPolls = polls.map((poll) => {
+        if (poll.id === pollId) {
+          return { ...poll, isActive: !isActive };
+        }
+        return poll;
+      });
+
+      // Update the polls array with the updated data
+      polls = [...updatedPolls];
+    } catch (error) {
+      console.error('Error toggling poll status:', error);
+    }
   };
 </script>
 
@@ -60,7 +97,7 @@
             </tr>
           </thead>
           <tbody>
-            {#each polls as poll}
+            {#each polls as poll, index}
               <tr
                 class={poll.id % 2 === 0
                   ? 'even:bg-gray-100 dark:even:bg-slate-800'
@@ -86,19 +123,21 @@
                     class="py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800 {poll.isActive
                       ? 'bg-red-500'
                       : 'bg-green-500'}"
-                    on:click={() => handleActivateClick()}
+                    on:click={() => handleActivateClick(poll.id, poll.isActive)}
                   >
-                    {#if poll.isActive}Deactivate {:else}Activate {/if}</button
+                    {#if poll.isActive}Deactivate
+                    {:else}Activate
+                    {/if}</button
                   >
                   <button
                     type="button"
                     class="py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-                    on:click={() => handleEditClick()}>Edit</button
+                    on:click={() => handleEditClick(poll.id)}>Edit</button
                   >
                   <button
                     type="button"
                     class="py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-red-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-                    on:click={() => handleDeleteClick()}>Delete</button
+                    on:click={() => handleDeleteClick(index, poll.id)}>Delete</button
                   >
                 </td>
               </tr>
