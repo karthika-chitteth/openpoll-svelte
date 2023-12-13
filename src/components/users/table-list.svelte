@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+
   import { PollService } from '../../services/poll.service';
 
   import { navigate } from 'svelte-routing';
@@ -30,10 +31,13 @@
     navigate(`/edit-poll/${pollId}`);
   };
 
-  const handleDeleteClick = async (pollId: number) => {
+  const handleDeleteClick = async (index: number, pollId: number) => {
     try {
       await PollService.deletePoll(pollId);
-      polls = polls.filter((poll) => poll.id !== pollId);
+      // const updatedPolls = [...polls];
+      polls.splice(index, 1);
+      // set(polls, updatedPolls);
+      polls = [...polls];
     } catch (error) {
       console.error('Error deleting poll:', error);
     }
@@ -93,7 +97,7 @@
             </tr>
           </thead>
           <tbody>
-            {#each polls as poll}
+            {#each polls as poll, index}
               <tr
                 class={poll.id % 2 === 0
                   ? 'even:bg-gray-100 dark:even:bg-slate-800'
@@ -133,7 +137,7 @@
                   <button
                     type="button"
                     class="py-2 px-3 mx-3 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-red-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-                    on:click={() => handleDeleteClick(poll.id)}>Delete</button
+                    on:click={() => handleDeleteClick(index, poll.id)}>Delete</button
                   >
                 </td>
               </tr>

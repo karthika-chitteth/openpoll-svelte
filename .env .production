@@ -1,3 +1,2 @@
 API_BASE_URL=https://openpoll.azurewebsites.net/api
-VITE_BASE_URL= http://localhost:4000/
 # VITE_SUPABASE_ANON_KEY=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndheHFqZnV5cXJtZXZrYXN6cmVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE2OTcxMjcwNjksImV4cCI6MjAxMjcwMzA2OX0.eKncNwCqK6gbm6toVN3YkTKlDdN9Ko6fFx0UaTj9rMY
