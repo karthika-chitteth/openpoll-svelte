@@ -10,13 +10,13 @@ import type {
 import ApiInstance from './api.service';
 
 export namespace PollService {
-  export const getPolls = async (id: number): Promise<TPoll[]> => {
+  export const getPolls = async (id: number): Promise<TPoll> => {
     try {
-      const res = await ApiInstance.get<TResponse<TPoll[]>>(`/Poll/` + id);
-      return res.data.data || []; // Return an empty array if the data is undefined
+      const res = await ApiInstance.get<TResponse<TPoll>>(`/Poll/` + id);
+      return res.data.data || {}; // Return an empty array if the data is undefined
     } catch (err) {
       console.log(err);
-      return []; // Return an empty array if the API call fails
+      return {}; // Return an empty array if the API call fails
     }
   };
 

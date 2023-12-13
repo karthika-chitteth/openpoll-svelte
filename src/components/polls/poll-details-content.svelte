@@ -6,11 +6,11 @@
   import type { TPoll } from '../../types/poll.type';
   export let id: string;
 
-  let poll = writable<TPoll[]>([{}]);
+  let poll = writable<TPoll>({});
   // let poll = writable({});
   const getPollDetails = async (id: string) => {
     if (id) {
-      let pollData: TPoll[] = await PollService.getPolls(+id);
+      let pollData: TPoll = await PollService.getPolls(+id);
       // if (pollData.length > 0) {
       poll.set(pollData);
       console.log('poll', pollData);
