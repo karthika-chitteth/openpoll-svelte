@@ -3,22 +3,24 @@ export type TPoll = {
   title?: string;
   isActive?: boolean;
   questions?: TPollQuestion[];
+  uniqueId?: string;
 };
 
 export type TPollQuestion = {
   id?: number;
   pollId?: number;
   title?: string;
-  questionType?: 0 | 1;
+  questionType?: number;
   isActive?: boolean;
   options?: TPollQuestionOption[];
 };
+
 export interface CreatePollResponse {
   id: number;
   title: string;
   isActive: boolean;
   userId: number;
-  questions: Questions[];
+  questions: TPollQuestion[];
   uniqueId?: string;
 }
 export type TPollQuestionOption = {
@@ -27,26 +29,13 @@ export type TPollQuestionOption = {
   questionId: number;
 };
 
-interface Questions {
-  id: number;
-  pollId: number;
-  title: string;
-  questionType: number;
-  options: OptionsPayload[];
-}
-interface OptionsPayload {
-  id: number;
-  title: string;
-  questionId: number;
-}
-
 export interface PublishPollResponse {
   id: number;
   title: string;
   isActive: boolean;
   userId: number;
   uniqueId: string;
-  questions: Questions[];
+  questions: TPollQuestion[];
 }
 export interface VoteResponse {
   pollId: number;
