@@ -1,41 +1,43 @@
 <script lang="ts">
+  import { onMount } from 'svelte';
+  import { useLocation, navigate } from 'svelte-routing';
   import { PollService } from '../../services/poll.service';
 
-  let options: string[] = [];
   let question: string = '';
-  // let inputValues: string[] = options.map((option) => option.title);
   let inputValues: string[] = [''];
 
-  let isEdit: boolean = false;
+  export let isEdit: boolean = false;
+
   let id: number | null = null;
-  let index = 0; // Assuming index is defined somewhere
-  let value = ''; // Initialize the value
-  function handleInputChange(event: Event) {
-    const target = event.target as HTMLInputElement;
-    const updatedOptions = [...options];
-    updatedOptions[index] = target.value;
-    options = updatedOptions; // Update the options array
-    console.log(options);
+  let index = 0;
+
+  function initializeValues(pollData: any) {
+    if (pollData && pollData.questions && pollData.questions.length > 0) {
+      question = pollData.questions[0]?.title || '';
+      const options = pollData.questions[0]?.options || [];
+      inputValues = options.map((option: { title: string }) => option.title);
+    }
   }
+
+  function handleInputChange(event: Event, index: number) {
+    const target = event.target as HTMLInputElement;
+    inputValues[index] = target.value;
+  }
+
   const addOption = () => {
-    options = [...options, ''];
     inputValues = [...inputValues, ''];
   };
 
   const removeOption = (index: number) => {
-    // if (options.length > 1) {
-    options = options.filter((_, i) => i !== index);
     inputValues = inputValues.filter((_, i) => i !== index);
-    // }
   };
-
   const handleCreateClick = async () => {
     try {
       const questions = [
         {
           title: question,
           questionType: 0,
-          options: options.map((label) => ({
+          options: inputValues.map((label) => ({
             title: label
           }))
         }
@@ -61,19 +63,33 @@
 
       console.log(`Poll ${isEdit ? 'edited' : 'created'}:`, response);
 
-      // Resetting values after successful submission
-      question = '';
-      options = [];
-      // Reset other necessary variables
-
-      // Navigate to "/users" after successful submission
-      // Use the appropriate navigation method for your app
-      // navigate("/users");
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error creating poll:', error);
       console.error(`Error ${isEdit ? 'editing' : 'creating'} poll:`, error);
     }
   };
+  function getParamsFromUrl() {
+    const path = window.location.pathname;
+    const parts = path.split('/');
+    const idFromPath = parts[parts.length - 1];
+
+    return Number(idFromPath);
+  }
+  onMount(async () => {
+    id = await getParamsFromUrl();
+
+    if (isEdit && id !== null) {
+      try {
+        const response = await PollService.getPolls(id);
+
+        const pollData = response;
+        initializeValues(pollData);
+      } catch (error) {
+        console.error('Error fetching poll:', error);
+      }
+    }
+  });
 </script>
 
 <div class="max-w-[85rem] w-full mx-auto px-4 mt-5 flex flex-col">
@@ -95,9 +111,10 @@
         type="text"
         class="py-3 px-5 mr-2 mb-5 block w-full border-solid border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
         placeholder={`Option ${index + 1}`}
-        {value}
-        on:input={handleInputChange}
+        bind:value={inputValues[index]}
+        on:input={(event) => handleInputChange(event, index)}
       />
+
       <button
         type="button"
         class="inline-flex flex-shrink-0 justify-center items-center gap-2 h-[2.875rem] w-[2.875rem] rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
@@ -142,7 +159,7 @@
       class="w-[15rem] h-[3rem] mt-5 py-1 px-1 inline-flex justify-center relative flex items-end items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
       on:click={handleCreateClick}
     >
-      Create Poll
+      {isEdit ? 'Edit Poll' : 'Create Poll'}
     </button>
   </div>
 </div>
