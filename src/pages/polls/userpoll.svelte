@@ -1,10 +1,10 @@
 <script>
   import Footer from '../../components/footer.svelte';
-  import UserPoll from '../../components/polls/user-poll.svelte';
+  import UserPoll from '../../components/polls/audience-poll.svelte';
 </script>
 
 <div>
-  <UserPoll/>
+  <UserPoll />
   <Footer />
 </div>
 

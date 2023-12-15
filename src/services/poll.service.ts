@@ -7,7 +7,7 @@ import type {
   TPoll,
   TPollQuestion,
   VotePayload,
-  VoteResponse,
+  VoteResponse
 } from '../types/poll.type';
 import ApiInstance from './api.service';
 

@@ -27,7 +27,7 @@
     <Route path="/"><Home /></Route>
     <Route path="/dashboard"><Dashboard /></Route>
     <Route path="/users/create-poll"><CreatePoll isEdit={false} /></Route>
-    <Route path="/poll/result/:id"><PollResult /></Route>
+    <Route path="/poll/result/:id" let:params><PollResult id={params.id} /></Route>
     <Route path="/poll/:id" let:params><AudienceLogin id={params.id} /></Route>
     <Route path="/edit-poll/:pollId">
       <CreatePoll isEdit={true} />
