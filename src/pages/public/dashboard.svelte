@@ -7,7 +7,7 @@
 
 <div>
   <BrandHeader />
-  <Dashboard />
+  <Dashboard /> 
   <ListPoll />
   <!-- <Footer /> -->
 </div>

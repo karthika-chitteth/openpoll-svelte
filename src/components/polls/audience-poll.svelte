@@ -4,6 +4,7 @@
   import { PollSchema } from '../../schema/poll/poll.schema';
   import type { PollQuestionResponse } from '../../types/poll.type';
   import * as yup from 'yup';
+  import { navigate } from 'svelte-routing';
 
   let data: PollQuestionResponse;
   export let id: string;
@@ -44,7 +45,7 @@
     };
   };
 
-  async function handleSubmitClick() {
+  async function handleSubmitClick() { 
     try {
       await PollSchema.validate(formData, { abortEarly: false });
       const response = await PollService.vote({
@@ -54,8 +55,7 @@
         answer1: formData.selectedOption,
         voterName: formData.voterName
       });
-      localStorage.clear();
-      console.log('Response:', response);
+      navigate('/users/success');
     } catch (error: unknown) {
       console.error(error);
       if (error instanceof yup.ValidationError) {
