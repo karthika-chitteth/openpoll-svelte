@@ -28,8 +28,6 @@
       if (response && response.data) {
         data = response.data;
         updateFormData();
-        console.log(formData);
-        console.log(data);
       }
     } catch (error) {
       console.error('Error fetching data:', error);
