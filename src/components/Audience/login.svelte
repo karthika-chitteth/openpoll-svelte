@@ -2,13 +2,16 @@
   import { navigate } from 'svelte-routing';
   import { writable } from 'svelte/store';
   const nameStore = writable('');
+  export let id: string;
+  console.log('uid', id);
+
   let name = '';
   function formSubmit(event: SubmitEvent) {
     event.preventDefault();
     nameStore.set(name);
-    if (name!='') {
-        navigate('/users/poll');
-      }
+    if (name != '') {
+      navigate('/users/poll/' + id);
+    }
   }
 </script>
 
