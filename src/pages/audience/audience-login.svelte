@@ -8,6 +8,5 @@
 <div class="bg-[#1F1C46] h-[100vh]">
   <BrandHeader />
   <Login {id} />
-
   <Footer />
 </div>

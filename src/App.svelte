@@ -12,6 +12,7 @@
   import Signin from './pages/public/signin.svelte';
   import AudienceLogin from './pages/audience/audience-login.svelte';
   import UserPoll from './pages/public/vote.svelte';
+  import Success from './components/polls/success.svelte';
 
   // ...
   _Language.subscribe((lang) => {
@@ -38,5 +39,6 @@
     <Route path="/users/create-poll"><CreatePoll /></Route>
     <Route path="/signup"><Signup /></Route>
     <Route path="/users/poll/:id" let:params><UserPoll id={params.id}/></Route>
+    <Route path="/users/success"><Success/></Route>
   </Router>
 </div>
