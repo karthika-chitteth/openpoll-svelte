@@ -47,7 +47,7 @@
               continue
             </button>
             <p class="mt-5 mb-2 text-sm leading-2 text-gray-600 text-center">OR</p>
-            <a href="users/poll" class=" mb-5 text-sm leading-4 text-gray-800 text-center">
+            <a href="/users/poll/{id}" class=" mb-5 text-sm leading-4 text-gray-800 text-center">
               Continue as anonymous
             </a>
           </div>
