@@ -5,7 +5,7 @@
 
   let question: string = '';
   let inputValues: string[] = [''];
-
+  let errorMessage: string = '';
   export let isEdit: boolean = false;
 
   let id: number | null = null;
@@ -31,8 +31,31 @@
   const removeOption = (index: number) => {
     inputValues = inputValues.filter((_, i) => i !== index);
   };
+
+  function areFieldsValid() {
+    if (question.trim() === '') {
+      errorMessage = 'Question field is empty';
+      return false;
+    }
+
+    for (let i = 0; i < inputValues.length; i++) {
+      if (inputValues[i].trim() === '') {
+        errorMessage = `Option ${i + 1} field is empty`;
+        return false;
+      }
+    }
+
+    errorMessage = ''; // Reset error message if fields are valid
+    return true;
+  }
+
   const handleCreateClick = async () => {
     try {
+      if (!areFieldsValid()) {
+        console.log('Fields required');
+        return;
+      }
+
       const questions = [
         {
           title: question,
@@ -48,7 +71,6 @@
         questions: questions.map((label) => ({
           title: label.title,
           questionType: label.questionType,
-
           options: label.options.map((label) => ({ title: label.title }))
         }))
       };
@@ -69,6 +91,7 @@
       console.error(`Error ${isEdit ? 'editing' : 'creating'} poll:`, error);
     }
   };
+
   function getParamsFromUrl() {
     const path = window.location.pathname;
     const parts = path.split('/');
@@ -76,6 +99,7 @@
 
     return Number(idFromPath);
   }
+
   onMount(async () => {
     id = await getParamsFromUrl();
 
@@ -94,9 +118,6 @@
 
 <div class="max-w-[85rem] w-full mx-auto px-4 mt-5 flex flex-col">
   <h2 class="mt-2 mb-5 text-lg text-gray-900 font-bold">Question</h2>
-  <p class="mt-2 mb-5 text-sm leading-6 text-gray-600">
-    Ask a question and let participants choose from a list of answers.
-  </p>
   <input
     type="text"
     class="py-3 px-4 mb-5 block w-full border-solid border-2 border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
@@ -153,6 +174,9 @@
     </svg>
     Add options
   </button>
+  {#if errorMessage}
+    <div class="text-red-500 mt-3">{errorMessage}</div>
+  {/if}
   <div class="flex justify-end">
     <button
       type="button"
