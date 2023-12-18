@@ -4,6 +4,7 @@
   import { LoginSchema } from '../../schema/auth/login.schema';
   import { UserService } from '../../services/user.service';
 
+
   let formData = {
     email: '',
     password: ''
@@ -12,6 +13,12 @@
     email: '',
     password: ''
   };
+
+  let isLoading = false;
+
+function toggleLoading() {
+  isLoading = !isLoading;
+}
   let errormsg = '';
   async function submitForm(event: SubmitEvent) {
     event.preventDefault();
@@ -123,11 +130,14 @@
             </div>
             <div class="errormessage">{errormsg}</div>
             <button
-              type="submit"
-              class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-            >
-              Sign in
-            </button>
+            type="submit" on:click={toggleLoading}
+            class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+          >
+          {#if isLoading}
+          <span class="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full"></span>
+          {/if}
+            Sign in
+          </button>
           </div>
         </form>
       </div>
