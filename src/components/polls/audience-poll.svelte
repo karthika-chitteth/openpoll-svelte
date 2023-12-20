@@ -46,6 +46,7 @@
   };
 
   function handleChange(event: any) {
+    formErrors.selectedOption='';
     const { name, value } = event.target;
     const numberValue = parseFloat(value) || 0;
     formData = { ...formData, [name]: numberValue };
