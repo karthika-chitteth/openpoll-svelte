@@ -20,7 +20,7 @@
     fetchData();
   });
   let formErrors = {
-    selectedOption: null,
+    selectedOption: '',
     voterName: null
   };
   const fetchData = async () => {
@@ -45,7 +45,14 @@
     };
   };
 
+  function handleChange(event: any) {
+    const { name, value } = event.target;
+    const numberValue = parseFloat(value) || 0;
+    formData = { ...formData, [name]: numberValue };
+  }
+
   async function handleSubmitClick() { 
+  if(formData.selectedOption != 0){ 
     try {
       await PollSchema.validate(formData, { abortEarly: false });
       const response = await PollService.vote({
@@ -63,15 +70,12 @@
           const propertyName = err.path ? err.path.toString() : '';
           formErrors = { ...formErrors, [propertyName]: err.message };
         });
-      } else {
-        console.error(error);
       }
     }
   }
-  function handleChange(event: any) {
-    const { name, value } = event.target;
-    const numberValue = parseFloat(value) || 0;
-    formData = { ...formData, [name]: numberValue };
+  else {
+      formErrors.selectedOption ='*please select an option.';
+    }
   }
 </script>
 
@@ -108,7 +112,9 @@
         </li>
       {/each}
     </ul>
-
+    {#if formErrors.selectedOption}
+    <div class="text-red-500 errormessage">{formErrors.selectedOption}</div>
+  {/if}
     <button
       type="button"
       class="w-[15rem] h-[3rem] mt-5 py-1 px-1 inline-flex justify-center relative items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
@@ -116,8 +122,14 @@
     >
       Submit
     </button>
-    {#if formErrors.selectedOption}
-      <div class="text-red-500">{formErrors.selectedOption}</div>
-    {/if}
   </div>
 {/if}
+<style>
+   .errormessage {
+    padding: 0;
+    margin: 0;
+    color: red;
+    display: block;
+    font-size: 12px;
+  }
+</style>
