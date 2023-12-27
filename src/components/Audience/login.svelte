@@ -3,27 +3,45 @@
   import { writable } from 'svelte/store';
   import { AudienceSchema } from '../../schema/auth/audience.schema';
   import * as yup from 'yup';
+
   const nameStore = writable('');
   export let id: string;
+
   let formData = {
     name: '',
   };
-  let formErrors = { 
+
+  let formErrors = {
     name: ''
   };
+
+  let hasVoted = sessionStorage.getItem(`voted_${id}`) === 'true';
+
+  let validationError: string = '';
+
   async function formSubmit(event: SubmitEvent) {
     event.preventDefault();
-   try{
-    formErrors = {
+
+    try {
+      formErrors = {
         name: ''
       };
-    await AudienceSchema.validate( formData, { abortEarly: false });
-    if (formData.name != '') {
-      nameStore.set(formData.name);
-      navigate('/users/poll/' + id);
-    }    
-   } 
-   catch (error: any) {
+
+      if (hasVoted) {
+        throw new Error('You have already voted.');
+      }
+      if (formData.name.trim() === '') {
+        throw new Error('Please enter your name.');
+      }
+
+      await AudienceSchema.validate(formData, { abortEarly: false });
+
+      if (formData.name !== '') {
+        sessionStorage.setItem(`voted_${id}`, 'true');
+        nameStore.set(formData.name);
+        navigate(`/users/poll/${id}`);
+      }
+    } catch (error: any) {
       if (error instanceof yup.ValidationError) {
         error.inner.forEach((err: yup.ValidationError) => {
           const propertyName = err.path?.toString() as string;
@@ -32,15 +50,15 @@
             [propertyName]: err.message
           };
         });
+      } else {
+        console.error(error.message);
+        validationError = error.message;
       }
     }
   }
 </script>
-
 <main class="w-full max-w-md mx-auto mt-10">
-  <div
-    class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
-  >
+  <div class="mt-7 bg-white border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
     <div class="p-4 sm:p-7">
       <div class="text-center">
         <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Welcome to poll !!!</h1>
@@ -50,20 +68,19 @@
         <form on:submit={formSubmit}>
           <div class="grid gap-y-4">
             <div>
-              <!-- svelte-ignore a11y-label-has-associated-control -->
               <label class="block text-sm mb-2 dark:text-white"> Name </label>
               <div class="relative">
                 <input
-                type="text"
-                name="name"
-                bind:value={formData.name}
-                class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm
-                                    focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900
-                                    dark:border-gray-700 dark:text-gray-400"
-                placeholder="name"
-              />
+                  type="text"
+                  name="name"
+                  bind:value={formData.name}
+                  class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm
+                          focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900
+                          dark:border-gray-700 dark:text-gray-400"
+                  placeholder="name"
+                />
                 <p class="text-xs text-red-600 mt-2" id="name-error">
-                  {formErrors.name}
+                  {formErrors.name || validationError}
                 </p>
               </div>
             </div>
@@ -86,7 +103,7 @@
 </main>
 
 <style>
- .errormessage {
+  .errormessage {
     padding: 0;
     margin: 0;
     color: red;
@@ -94,5 +111,4 @@
     font-size: 12px;
     line-height: 0.2;
   }
-
 </style>
