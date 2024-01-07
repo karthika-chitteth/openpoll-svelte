@@ -4,24 +4,35 @@
   import { LoginSchema } from '../../schema/auth/login.schema';
   import { UserService } from '../../services/user.service';
 
-
   let formData = {
     email: '',
     password: ''
   };
+
   let formErrors = {
     email: '',
     password: ''
   };
 
   let isLoading = false;
+  let submitClicked = false;
 
-function toggleLoading() {
-  isLoading = !isLoading;
-}
+  function toggleLoading() {
+    submitClicked = true;
+    // Show the loader only if both email and password are filled
+    if (formData.email && formData.password) {
+      isLoading = true;
+      submitForm();
+    }
+  }
+
   let errormsg = '';
-  async function submitForm(event: SubmitEvent) {
-    event.preventDefault();
+
+  async function submitForm(event?: SubmitEvent) {
+    if (event) {
+      event.preventDefault(); // Prevent page refresh
+    }
+
     let response;
     try {
       await LoginSchema.validate(formData, { abortEarly: false });
@@ -29,9 +40,11 @@ function toggleLoading() {
         email: formData.email,
         password: formData.password
       });
+
       if (response) {
         navigate('/dashboard');
       }
+
       localStorage.setItem('token', response.data.token);
     } catch (error: any) {
       if (error instanceof yup.ValidationError) {
@@ -45,32 +58,28 @@ function toggleLoading() {
       } else {
         errormsg = error.response.data.error;
       }
+    } finally {
+      isLoading = false;
     }
   }
+
   function clearErrorMessage() {
     errormsg = '';
   }
 </script>
-
 <main class="w-full max-w-md mx-auto mt-10">
-  <div
-    class=" bg-gray-200 border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700"
-  >
+  <div class="bg-gray-200 border border-gray-200 rounded-xl shadow-sm dark:bg-gray-800 dark:border-gray-700">
     <div class="p-4 sm:p-7">
       <div class="text-center">
         <h1 class="block text-2xl font-bold text-gray-800 dark:text-white">Sign In</h1>
         <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">
-          Dont have an account?
-          <a class="text-blue-600 decoration-2 hover:underline font-medium" href="/signup">
-            Sign up now
-          </a>
+          Don't have an account?
+          <a class="text-blue-600 decoration-2 hover:underline font-medium" href="/signup">Sign up now</a>
         </p>
       </div>
 
       <div class="mt-5">
-        <div
-          class="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:mr-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ml-6 dark:text-gray-500 dark:before:border-gray-600 dark:after:border-gray-600"
-        >
+        <div class="py-3 flex items-center text-xs text-gray-400 uppercase before:flex-[1_1_0%] before:border-t before:border-gray-200 before:mr-6 after:flex-[1_1_0%] after:border-t after:border-gray-200 after:ml-6 dark:text-gray-500 dark:before:border-gray-600 dark:after:border-gray-600">
           Or
         </div>
 
@@ -87,9 +96,7 @@ function toggleLoading() {
                   class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
                   placeholder="example@opentrends.net"
                 />
-                <div
-                  class="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3"
-                />
+                <div class="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3" />
               </div>
               <p class="text-xs text-red-600 mt-2" id="email-error">
                 {formErrors.email}
@@ -107,9 +114,7 @@ function toggleLoading() {
                   class="py-3 px-4 block w-full border-gray-200 rounded-md text-sm focus:border-blue-500 focus:ring-blue-500 dark:bg-slate-900 dark:border-gray-700 dark:text-gray-400"
                   placeholder="**********"
                 />
-                <div
-                  class="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3"
-                >
+                <div class="hidden absolute inset-y-0 right-0 flex items-center pointer-events-none pr-3">
                   <svg
                     class="h-5 w-5 text-red-500"
                     width="16"
@@ -130,14 +135,15 @@ function toggleLoading() {
             </div>
             <div class="errormessage">{errormsg}</div>
             <button
-            type="submit" on:click={toggleLoading}
-            class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
-          >
-          {#if isLoading}
-          <span class="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full"></span>
-          {/if}
-            Sign in
-          </button>
+              type="submit"
+              on:click={toggleLoading}
+              class="py-3 px-4 inline-flex justify-center items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+            >
+              {#if isLoading && submitClicked}
+                <span class="animate-spin inline-block w-4 h-4 border-[3px] border-current border-t-transparent text-white rounded-full"></span>
+              {/if}
+              Sign in
+            </button>
           </div>
         </form>
       </div>

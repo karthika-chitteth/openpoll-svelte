@@ -28,8 +28,13 @@
     "preline": "^1.9.0",
     "qrcode": "^1.5.3",
     "svelte-i18n": "^4.0.0",
-    "svelte-navigator": "^3.2.2",
+    "svelte-navigator": "^3.0.0",
     "svelte-routing": "^2.5.0",
     "yup": "^1.3.2"
-  }
+  },
+  "description": "The openPoll Svelte app is a feature-rich web application designed for creating and participating in polls. This architecture document provides a comprehensive view of the project's structure, libraries, and the organization of key components.",
+  "main": "postcss.config.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }
