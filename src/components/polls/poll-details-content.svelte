@@ -21,6 +21,21 @@
   onMount(() => {
     getPollDetails(id);
   });
+
+  const handleCopy = async () => {
+    try {
+      const inputElement = document.getElementById('poll-url-input') as HTMLInputElement;
+      if (inputElement) {
+        const copyText = inputElement.value;
+        await navigator.clipboard.writeText(copyText);
+        console.log('Copied to clipboard:', copyText);
+      } else {
+        console.error('Input element not found');
+      }
+    } catch (error) {
+      console.error('Failed to copy:', error);
+    }
+  };
 </script>
 
 <div class="max-w-[85rem] mx-auto px-4 sm:px-4 lg:px-4 mt-5">
@@ -31,10 +46,81 @@
       >
         {$poll && $poll.title ? $poll.title : ''}
       </h1>
-      <a class="mt-5 text-lg text-blue-500 dark:text-blue-100" href={`/poll/${$poll?.uniqueId}`}>
-        <!--  -->
-        Poll here
-      </a>
+
+      <div>
+        <a
+          class="inline-flex items-center gap-x-1 text-sm text-gray-800 hover:text-blue-600 dark:text-gray-200 dark:hover:text-blue-500"
+          href={'/dashboard/'}
+        >
+          <svg
+            class="flex-shrink-0 w-4 h-4"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="m15 18-6-6 6-6" />
+          </svg>
+          Back to dashboard
+        </a>
+      </div>
+      <div class="my-3 max-w-lg w-full inline-flex gap-x-2">
+        <input
+          type="text"
+          class="w-full"
+          id="poll-url-input"
+          value={window.location.origin + `/poll/${$poll?.uniqueId}`}
+        />
+        <button
+          class="copybtn js-clipboard py-3 px-4 group inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none dark:bg-slate-900 dark:border-gray-700 dark:text-white dark:hover:bg-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
+          on:click={handleCopy}
+        >
+          Copy
+          <span class="border-s ps-3.5 dark:border-gray-700">
+            <svg
+              class="js-clipboard-default w-4 h-4 group-hover:rotate-6 transition"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+              <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+            </svg>
+
+            <svg
+              class="js-clipboard-success hidden w-4 h-4 text-blue-600 rotate-6"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </span>
+        </button>
+      </div>
+      <div>
+        <a class="mt-5 text-lg text-blue-500 dark:text-blue-100" href={`/poll/${$poll?.uniqueId}`}>
+          <!--  -->
+          Poll here
+        </a>
+      </div>
 
       <div class="mt-5 lg:mt-8 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
         <p
