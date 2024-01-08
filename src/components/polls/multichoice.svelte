@@ -6,6 +6,7 @@
   let question: string = '';
   let inputValues: string[] = [''];
   let errorMessage: string = '';
+
   export let isEdit: boolean = false;
 
   let id: number | null = null;
@@ -33,20 +34,28 @@
   };
 
   function areFieldsValid() {
+    let isValid = true;
+
+    const emptyFields = [];
+
     if (question.trim() === '') {
-      errorMessage = 'Question field is empty';
-      return false;
+      emptyFields.push('Question');
+      isValid = false;
     }
 
-    for (let i = 0; i < inputValues.length; i++) {
-      if (inputValues[i].trim() === '') {
-        errorMessage = `Option ${i + 1} field is empty`;
-        return false;
-      }
+    const emptyOptionFields = inputValues.filter((value) => value.trim() === '');
+    if (emptyOptionFields.length > 0) {
+      emptyFields.push(`one or more option field are empty`);
+      isValid = false;
     }
 
-    errorMessage = ''; // Reset error message if fields are valid
-    return true;
+    if (emptyFields.length > 0) {
+      errorMessage = `${emptyFields.join(' and ')} `;
+    } else {
+      errorMessage = '';
+    }
+
+    return isValid;
   }
 
   const handleCreateClick = async () => {
@@ -180,10 +189,10 @@
   <div class="flex justify-end">
     <button
       type="button"
-      class="w-[15rem] h-[3rem] mt-5 py-1 px-1 inline-flex justify-center relative flex items-end items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
+      class="w-[15rem] h-[3rem] my-5 py-1 px-1 inline-flex justify-center relative flex items-end items-center gap-2 rounded-md border border-transparent font-semibold bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all text-sm dark:focus:ring-offset-gray-800"
       on:click={handleCreateClick}
     >
-      {isEdit ? 'Edit Poll' : 'Create Poll'}
+      {isEdit ? 'Save' : 'Create Poll'}
     </button>
   </div>
 </div>
